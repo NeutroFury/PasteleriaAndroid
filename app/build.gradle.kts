@@ -41,6 +41,8 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.compose.ui.text)
     val lifecycle_version = "2.9.4"
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")

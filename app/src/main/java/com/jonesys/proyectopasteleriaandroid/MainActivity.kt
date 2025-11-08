@@ -45,15 +45,3 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
-
-//asdasdsad
-@Composable
-fun SampleFunction() {
-    Text(text = "This is a sample function.")
-}
-
-// Another comment for testing purposes
-@Composable
-fun AnotherSampleFunction() {
-    Text(text = "This is another sample function.")
-}

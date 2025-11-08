@@ -45,3 +45,9 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+//asdasdsad
+@Composable
+fun SampleFunction() {
+    Text(text = "This is a sample function.")
+}

@@ -19,44 +19,46 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 
 @Composable
-fun Header(){
-    Row(modifier = Modifier
-        .padding(vertical = 20.dp, horizontal = 20.dp)
-        .fillMaxWidth()
-        .background(ColorMainRosa),
+fun Header(navController: NavHostController) {
+    Row(
+        modifier = Modifier
+            .padding(vertical = 20.dp, horizontal = 20.dp)
+            .fillMaxWidth()
+            .background(ColorMainRosa),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
-    ){
-    Row(verticalAlignment = Alignment.CenterVertically){
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            modifier = Modifier
-                .size(48.dp)
-                .padding(end = 8.dp),
-            contentScale = ContentScale.Fit
-
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(end = 8.dp),
+                contentScale = ContentScale.Fit
+            )
+        }
+        Text(
+            "Pasteleria mil sabores",
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Bold,
+            color = ColorTexto
         )
-    }
-
-    Text("Pasteleria mil sabores",
-        fontSize = 17.sp,
-        fontWeight = FontWeight.Bold,
-        color = ColorTexto
-        )
-    }
-    Button(onClick = {},
-        colors = ButtonDefaults.buttonColors(
-            containerColor = ColorMainRosa,
-            contentColor = ColorTexto
-        ),
-        shape = RoundedCornerShape(16.dp)
-    )
-    {Text("Iniciar sesión")
+        Button(
+            onClick = { navController.navigate("login") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = ColorMainRosa,
+                contentColor = ColorTexto
+            ),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text("Iniciar sesión")
+        }
     }
 }

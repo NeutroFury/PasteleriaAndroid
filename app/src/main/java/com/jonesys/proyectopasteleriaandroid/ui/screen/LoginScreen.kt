@@ -1,68 +1,58 @@
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(viewModel: LoginViewModel, navController: NavHostController) {
     val uiState by viewModel.FormData.collectAsState()
+    val contexto = LocalContext.current
+
+    LaunchedEffect(uiState.isLogin) {
+        if (uiState.isLogin) {
+            navController.navigate("bienvenida") {
+                popUpTo("login") { inclusive = true }
+                launchSingleTop = true
+            }
+            Toast.makeText(contexto, "Inició Sesión Correctamente", Toast.LENGTH_LONG).show()
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when {
-            uiState.isLogin -> {
-                Text("Inició Sesión Correctamente")
-            }
-            else -> {
-                OutlinedTextField(
-                    value = uiState.email,
-                    onValueChange = { viewModel.actualizarEmail(it) },
-                    label = { Text("Email") }
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                OutlinedTextField(
-                    value = uiState.password,
-                    onValueChange = { viewModel.actualizarPassword(it) },
-                    label = { Text("Password") },
-                    visualTransformation = PasswordVisualTransformation()
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                uiState.error?.let {
-                    Text(
-                        text = it,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-                Button(
-                    onClick = {
-                        viewModel.Login()
-                    }
-                ) {
-                    Text("Iniciar Sesión")
-                }
-            }
+        OutlinedTextField(
+            value = uiState.email,
+            onValueChange = { viewModel.actualizarEmail(it) },
+            label = { Text("Email") },
+            isError = uiState.error != null
+        )
+        Spacer(Modifier.height(16.dp))
+        OutlinedTextField(
+            value = uiState.password,
+            onValueChange = { viewModel.actualizarPassword(it) },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            isError = uiState.error != null
+        )
+        Spacer(Modifier.height(16.dp))
+        uiState.error?.let {
+            Text(it, color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(8.dp))
+        }
+        Button(onClick = { viewModel.Login() }) {
+            Text("Iniciar Sesión")
         }
     }
 }

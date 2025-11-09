@@ -27,7 +27,7 @@ import com.jonesys.proyectopasteleriaandroid.viewmodel.RegistroViewModel
 @Composable
 fun RegistroScreen(viewModel: RegistroViewModel, navController: NavController) {
     val usuario = viewModel.usuario.collectAsState().value
-    val ctx = LocalContext.current
+    val contexto = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -91,7 +91,7 @@ fun RegistroScreen(viewModel: RegistroViewModel, navController: NavController) {
                 if (viewModel.validar()) {
                     navController.navigate("bienvenida")
                 } else {
-                    Toast.makeText(ctx, "Validación fallida", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(contexto, "Validación fallida", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.fillMaxWidth(0.5f)

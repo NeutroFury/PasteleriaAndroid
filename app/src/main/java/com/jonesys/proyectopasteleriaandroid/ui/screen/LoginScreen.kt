@@ -37,7 +37,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(ColorMainBeige) // fondo primero
+            .background(ColorMainBeige)
             .statusBarsPadding()
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,

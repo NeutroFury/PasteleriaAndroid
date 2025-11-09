@@ -36,7 +36,7 @@ fun HomeScreen(navController: NavHostController) {
     Scaffold(
         containerColor = ColorMainBeige,
         topBar = { Header(navController = navController) },
-        bottomBar = { Footer() }
+        bottomBar = { Footer(navController = navController) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -52,17 +52,21 @@ fun HomeScreen(navController: NavHostController) {
                 colors = CardDefaults.cardColors(containerColor = ColorCard),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Column(modifier = Modifier.padding(10.dp)) {
+                Column(
+                    modifier = Modifier.padding(10.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         "Tienda Online!",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = ColorTexto
+                        color = ColorTexto,
+
                     )
                     Text(
                         "Bienvenido a nuestra tienda en versión móvil! Conoce nuestra variedad en pasteles y postres!",
                         fontSize = 13.sp,
-                        color = ColorTexto
+                        color = ColorTexto,
                     )
                 }
             }
@@ -86,7 +90,7 @@ fun HomeScreen(navController: NavHostController) {
                     )
                     Spacer(Modifier.height(25.dp))
                     Button(
-                        onClick = { navController.navigate("login") },
+                        onClick = {  },
                         modifier = Modifier.height(36.dp),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                         colors = ButtonDefaults.buttonColors(

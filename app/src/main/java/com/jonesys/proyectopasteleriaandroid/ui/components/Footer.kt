@@ -13,12 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 
 
 @Composable
-fun Footer() {
+fun Footer(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,7 +33,7 @@ fun Footer() {
             contentDescription = "Inicio",
             modifier = Modifier
                 .size(35.dp)
-                .clickable { /* acción del botón imagen */ },
+                .clickable { navController.navigate("bienvenida") },
             contentScale = ContentScale.Fit
         )
         Image(
@@ -40,7 +41,7 @@ fun Footer() {
             contentDescription = "Ubicacion",
             modifier = Modifier
                 .size(35.dp)
-                .clickable { /* acción del botón imagen */ },
+                .clickable {  },
             contentScale = ContentScale.Fit
         )
 
@@ -49,7 +50,7 @@ fun Footer() {
             contentDescription = "Productos",
             modifier = Modifier
                 .size(35.dp)
-                .clickable { /* acción del botón imagen */ },
+                .clickable {  },
             contentScale = ContentScale.Fit
         )
         Image(
@@ -57,7 +58,7 @@ fun Footer() {
             contentDescription = "Perfil",
             modifier = Modifier
                 .size(35.dp)
-                .clickable { /* acción del botón imagen */ },
+                .clickable {  },
             contentScale = ContentScale.Fit
         )
     }

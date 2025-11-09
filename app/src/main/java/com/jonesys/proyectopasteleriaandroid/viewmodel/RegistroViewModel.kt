@@ -46,29 +46,32 @@ class RegistroViewModel : ViewModel() {
             )
         }
     }
-    fun onChangeAceptarTerminos(valor: Boolean){
+
+    fun onChangeAceptarTerminos(valor: Boolean) {
         _usuario.update { it.copy(aceptarTerminos = valor) }
     }
 
-    fun validar(): Boolean{
+    fun validar(): Boolean {
         val f = _usuario.value
         val errores = UsuarioErrores(
-            nombre = if (f.nombre.isBlank()) "Nombre esta vacio" else null,
-            email = if (f.email.isBlank() || !f.email.contains("@")) "Error correo" else null,
+            nombre = if (f.nombre.isBlank()) "Nombre vacío" else null,
+            email = if (f.email.isBlank() || !f.email.contains("@")) "Correo inválido" else null,
             password = if (f.password.isBlank()) "Contraseña vacía" else null,
-            confirmarPassword = if (f.confirmarPassword != f.password) "La coinciden las contraseñas" else null,
-            aceptaTerminos = if(f.aceptarTerminos==false) "Debe aceptar términos" else null
-
+            confirmarPassword = when {
+                f.confirmarPassword.isBlank() -> "Confirmación vacía"
+                f.confirmarPassword != f.password -> "Las contraseñas no coinciden"
+                else -> null
+            },
+            aceptaTerminos = if (!f.aceptarTerminos) "Debe aceptar términos" else null
         )
-        _usuario.update {
-            it.copy(error = errores)
-        }
-        if (errores.nombre==null && errores.email==null && errores.password==null
-            && errores.aceptaTerminos==null){
-            return  true
-        } else{
-            return  false
-        }
+        _usuario.update { it.copy(error = errores) }
 
+        return errores.run {
+            nombre == null &&
+                    email == null &&
+                    password == null &&
+                    confirmarPassword == null &&
+                    aceptaTerminos == null
+        }
     }
 }

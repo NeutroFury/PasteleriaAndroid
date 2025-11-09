@@ -1,6 +1,8 @@
+// kotlin
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -10,13 +12,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
-    navController: NavHostController)
-{
+    navController: NavHostController
+) {
     val uiState by viewModel.FormData.collectAsState()
     val contexto = LocalContext.current
 
@@ -31,7 +34,11 @@ fun LoginScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ColorMainBeige) // fondo primero
+            .statusBarsPadding()
+            .padding(20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -39,7 +46,9 @@ fun LoginScreen(
             value = uiState.email,
             onValueChange = { viewModel.actualizarEmail(it) },
             label = { Text("Email") },
-            isError = uiState.error != null
+            isError = uiState.error != null,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(Modifier.height(16.dp))
         OutlinedTextField(
@@ -47,7 +56,9 @@ fun LoginScreen(
             onValueChange = { viewModel.actualizarPassword(it) },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
-            isError = uiState.error != null
+            isError = uiState.error != null,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(Modifier.height(16.dp))
         uiState.error?.let {

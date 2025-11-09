@@ -27,14 +27,12 @@ fun AppNavigate() {
         composable("bienvenida") { HomeScreen(navController) }
         composable("login") {
             Box(Modifier.fillMaxSize()) {
-                Fondo()
                 LoginScreen(viewModel = loginViewModel, navController = navController)
             }
         }
         composable("registro") {
             val registroViewModel: RegistroViewModel = viewModel()
             Box(Modifier.fillMaxSize()) {
-                Fondo()
                 RegistroScreen(
                     viewModel = registroViewModel,
                     navController = navController

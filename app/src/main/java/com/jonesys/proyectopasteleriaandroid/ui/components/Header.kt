@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,9 +30,10 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 fun Header(navController: NavHostController) {
     Row(
         modifier = Modifier
-            .padding(vertical = 20.dp, horizontal = 20.dp)
             .fillMaxWidth()
-            .background(ColorMainRosa),
+            .height(80.dp)
+            .background(ColorMainRosa)
+            .padding(vertical = 20.dp, horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

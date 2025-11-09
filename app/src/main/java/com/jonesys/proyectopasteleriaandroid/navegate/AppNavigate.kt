@@ -4,16 +4,19 @@ package com.jonesys.proyectopasteleriaandroid.navegate
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.jonesys.proyectopasteleriaandroid.ui.screen.Fondo
+import com.jonesys.proyectopasteleriaandroid.ui.screen.BlogDosScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.BlogUnoScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.CarritoScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.HomeScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.LoginScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.OfertasScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.PerfilScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.ProductosScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.RegistroScreen
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.RegistroViewModel
@@ -39,5 +42,24 @@ fun AppNavigate() {
                 )
             }
         }
+        composable("productos") {
+            Box(Modifier.fillMaxSize()) { ProductosScreen(navController)}
+        }
+        composable ("perfil"){
+            Box(Modifier.fillMaxSize()) { PerfilScreen(navController) }
+        }
+        composable("ofertas") {
+            Box(Modifier.fillMaxSize()) { OfertasScreen(navController) }
+        }
+        composable("carrito") {
+            Box(Modifier.fillMaxSize()) { CarritoScreen(navController) }
+        }
+        composable("blogUno") {
+            Box(Modifier.fillMaxSize()) { BlogUnoScreen(navController) }
+        }
+        composable("blogDos") {
+            Box(Modifier.fillMaxSize()) { BlogDosScreen(navController) }
+        }
+
     }
 }

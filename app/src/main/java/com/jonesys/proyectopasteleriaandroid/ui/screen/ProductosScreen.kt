@@ -32,7 +32,7 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun ProductosScreen(navController: NavHostController) {
     Scaffold(
         containerColor = ColorMainBeige,
         topBar = { Header(navController = navController) },
@@ -57,61 +57,17 @@ fun HomeScreen(navController: NavHostController) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        "Tienda Online!",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = ColorTexto,
-
-                    )
-                    Text(
-                        "Bienvenido a nuestra tienda en versión móvil!",
-                        fontSize = 13.sp,
-                        color = ColorTexto,)
-                    Button(
-                        onClick = { navController.navigate("blogUno") },
-                        modifier = Modifier.height(36.dp),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = ColorTexto,
-                            contentColor = ColorMainRosa
-                        ),
-                        shape = RoundedCornerShape(14.dp)
-                    ) {
-                        Text("IR!", fontSize = 13.sp)
-                    }
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                colors = CardDefaults.cardColors(containerColor = ColorCard),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(10.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        "¡¡OFERTAS ESPECIALES!!",
+                        "Productos Disponibles",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = ColorTexto
                     )
-                    Spacer(Modifier.height(25.dp))
-                    Button(
-                        onClick = { navController.navigate("ofertas") },
-                        modifier = Modifier.height(36.dp),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = ColorTexto,
-                            contentColor = ColorMainRosa
-                        ),
-                        shape = RoundedCornerShape(14.dp)
-                    ) {
-                        Text("IR!", fontSize = 13.sp)
-                    }
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "Aquí se mostrarán los productos de la pastelería.",
+                        fontSize = 16.sp,
+                        color = ColorTexto
+                    )
                 }
             }
         }

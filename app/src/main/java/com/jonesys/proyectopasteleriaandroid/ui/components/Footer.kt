@@ -50,7 +50,7 @@ fun Footer(navController: NavHostController) {
             contentDescription = "Productos",
             modifier = Modifier
                 .size(35.dp)
-                .clickable {  },
+                .clickable { navController.navigate("productos") },
             contentScale = ContentScale.Fit
         )
         Image(
@@ -58,7 +58,7 @@ fun Footer(navController: NavHostController) {
             contentDescription = "Perfil",
             modifier = Modifier
                 .size(35.dp)
-                .clickable {  },
+                .clickable { navController.navigate("perfil") },
             contentScale = ContentScale.Fit
         )
     }

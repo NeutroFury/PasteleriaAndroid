@@ -1,4 +1,3 @@
-// Kotlin
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
 import androidx.compose.runtime.Composable
@@ -20,12 +19,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.viewmodel.RegistroViewModel
+import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 
 @Composable
-fun RegistroScreen(viewModel: RegistroViewModel, navController: NavController) {
+fun RegistroScreen(
+    viewModel: RegistroViewModel,
+    authViewModel: AuthViewModel,
+    navController: NavHostController
+) {
     val usuario = viewModel.usuario.collectAsState().value
     val contexto = LocalContext.current
 
@@ -89,6 +93,7 @@ fun RegistroScreen(viewModel: RegistroViewModel, navController: NavController) {
         Button(
             onClick = {
                 if (viewModel.validar()) {
+                    authViewModel.setLoggedIn(true, usuario.nombre)
                     navController.navigate("bienvenida")
                 } else {
                     Toast.makeText(contexto, "Validación fallida", Toast.LENGTH_SHORT).show()

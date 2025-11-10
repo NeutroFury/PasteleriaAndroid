@@ -1,4 +1,3 @@
-// kotlin
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
 import android.widget.Toast
@@ -13,11 +12,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
+import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
+    authViewModel: AuthViewModel,
     navController: NavHostController
 ) {
     val uiState by viewModel.FormData.collectAsState()
@@ -25,6 +26,7 @@ fun LoginScreen(
 
     LaunchedEffect(uiState.isLogin) {
         if (uiState.isLogin) {
+            authViewModel.setLoggedIn(true, uiState.email)
             navController.navigate("bienvenida") {
                 popUpTo("login") { inclusive = true }
                 launchSingleTop = true
@@ -32,7 +34,6 @@ fun LoginScreen(
             Toast.makeText(contexto, "Inició Sesión Correctamente", Toast.LENGTH_LONG).show()
         }
     }
-
 
     Column(
         modifier = Modifier

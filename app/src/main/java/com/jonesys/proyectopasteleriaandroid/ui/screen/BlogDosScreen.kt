@@ -19,6 +19,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,13 +35,16 @@ import com.jonesys.proyectopasteleriaandroid.ui.components.Header
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorCard
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
+import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 
 @Composable
-fun BlogDosScreen(navController: NavHostController)
+fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel)
 {val scrollState = rememberScrollState()
+    val isLogged by authViewModel.isLogged.collectAsState()
+    val userName by authViewModel.userName.collectAsState()
     Scaffold(
         containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController) },
+        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
         bottomBar = { Footer(navController = navController) }
     ) { innerPadding ->
         Column(

@@ -1,3 +1,4 @@
+// kotlin
 package com.jonesys.proyectopasteleriaandroid.ui.components
 
 import androidx.compose.foundation.Image
@@ -30,7 +31,11 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 
 @Composable
-fun Header(navController: NavHostController) {
+fun Header(
+    navController: NavHostController,
+    isLogged: Boolean = false,
+    userName: String? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,33 +64,42 @@ fun Header(navController: NavHostController) {
             )
         }
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { navController.navigate("login") },
-                modifier = Modifier.height(36.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ColorTexto,
-                    contentColor = ColorMainRosa
-                ),
-                shape = RoundedCornerShape(14.dp)
+        if (isLogged) {
+            Text(
+                text = "Bienvenid@ ${userName ?: ""}",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = ColorTexto
+            )
+        } else {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Iniciar", fontSize = 13.sp)
-            }
-            Button(
-                onClick = { navController.navigate("registro") },
-                modifier = Modifier.height(36.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ColorTexto,
-                    contentColor = ColorMainRosa
-                ),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                Text("Registrarse", fontSize = 13.sp)
+                Button(
+                    onClick = { navController.navigate("login") },
+                    modifier = Modifier.height(36.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ColorTexto,
+                        contentColor = ColorMainRosa
+                    ),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Text("Iniciar", fontSize = 13.sp)
+                }
+                Button(
+                    onClick = { navController.navigate("registro") },
+                    modifier = Modifier.height(36.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ColorTexto,
+                        contentColor = ColorMainRosa
+                    ),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Text("Registrarse", fontSize = 13.sp)
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-// Kotlin
+// kotlin
 package com.jonesys.proyectopasteleriaandroid.navegate
 
 import androidx.compose.runtime.Composable
@@ -19,19 +19,24 @@ import com.jonesys.proyectopasteleriaandroid.ui.screen.OfertasScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.PerfilScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.ProductosScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.RegistroScreen
+import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.RegistroViewModel
+import androidx.navigation.NavHostController
 
 @Composable
 fun AppNavigate() {
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = viewModel()
+    val authViewModel: AuthViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "bienvenida") {
-        composable("bienvenida") { HomeScreen(navController) }
+        composable("bienvenida") {
+            Box(Modifier.fillMaxSize()) { HomeScreen(navController, authViewModel) }
+        }
         composable("login") {
             Box(Modifier.fillMaxSize()) {
-                LoginScreen(viewModel = loginViewModel, navController = navController)
+                LoginScreen(viewModel = loginViewModel, authViewModel = authViewModel, navController = navController)
             }
         }
         composable("registro") {
@@ -39,31 +44,17 @@ fun AppNavigate() {
             Box(Modifier.fillMaxSize()) {
                 RegistroScreen(
                     viewModel = registroViewModel,
+                    authViewModel = authViewModel,
                     navController = navController
                 )
             }
         }
-        composable("productos") {
-            Box(Modifier.fillMaxSize()) { ProductosScreen(navController)}
-        }
-        composable ("perfil"){
-            Box(Modifier.fillMaxSize()) { PerfilScreen(navController) }
-        }
-        composable("ofertas") {
-            Box(Modifier.fillMaxSize()) { OfertasScreen(navController) }
-        }
-        composable("carrito") {
-            Box(Modifier.fillMaxSize()) { CarritoScreen(navController) }
-        }
-        composable("blogUno") {
-            Box(Modifier.fillMaxSize()) { BlogUnoScreen(navController) }
-        }
-        composable("blogDos") {
-            Box(Modifier.fillMaxSize()) { BlogDosScreen(navController) }
-        }
-        composable("geo") {
-            Box(Modifier.fillMaxSize()) { GeolocalizacionScreen(navController) }
-        }
-
+        composable("productos") { Box(Modifier.fillMaxSize()) { ProductosScreen(navController)} }
+        composable ("perfil"){ Box(Modifier.fillMaxSize()) { PerfilScreen(navController, authViewModel) } }
+        composable("ofertas") { Box(Modifier.fillMaxSize()) { OfertasScreen(navController, authViewModel) } }
+        composable("carrito") { Box(Modifier.fillMaxSize()) { CarritoScreen(navController, authViewModel) } }
+        composable("blogUno") { Box(Modifier.fillMaxSize()) { BlogUnoScreen(navController, authViewModel) } }
+        composable("blogDos") { Box(Modifier.fillMaxSize()) { BlogDosScreen(navController, authViewModel) } }
+        composable("geo") { Box(Modifier.fillMaxSize()) { GeolocalizacionScreen(navController) } }
     }
 }

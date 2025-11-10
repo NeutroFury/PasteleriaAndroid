@@ -133,13 +133,14 @@ fun GeolocalizacionScreen(navController: NavHostController) {
                     mapViewportState = mapViewportState
                 ) {
                     val icon = rememberIconImage(resourceId = R.drawable.ubi)
+                    val iconusu = rememberIconImage(resourceId = R.drawable.usuariomapa)
 
                     // Pin del usuario
                     userLocation?.let { (lat, lon) ->
                         PointAnnotation(
                             point = Point.fromLngLat(lon, lat)
                         ) {
-                            iconImage = icon
+                            iconImage = iconusu
                             iconSize = 0.2
                         }
                     }

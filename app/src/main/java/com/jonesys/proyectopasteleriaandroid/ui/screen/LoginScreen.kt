@@ -16,11 +16,7 @@ import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel,
-    authViewModel: AuthViewModel,
-    navController: NavHostController
-) {
+fun LoginScreen(viewModel: LoginViewModel,authViewModel: AuthViewModel,navController: NavHostController) {
     val uiState by viewModel.FormData.collectAsState()
     val contexto = LocalContext.current
 

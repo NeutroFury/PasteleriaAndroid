@@ -17,3 +17,7 @@ val ColorTexto = Color(0xFF5C2A1E)
 
 val ColorMainBlanco = Color(0xFFFFFFFF)
 val ColorCard = Color(0xFFF6E0F2)
+
+val ColorBotonRosa = Color(0xFFE87A9A)
+
+val ColorTitulos = Color(0xFF7C3A2D)

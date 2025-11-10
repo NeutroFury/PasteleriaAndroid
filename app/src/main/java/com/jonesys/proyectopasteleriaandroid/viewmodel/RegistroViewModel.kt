@@ -10,6 +10,7 @@ import com.jonesys.proyectopasteleriaandroid.model.UsuarioErrores
 class RegistroViewModel : ViewModel() {
     private val _usuario = MutableStateFlow(FormularioRegistro(aceptarTerminos = false))
     val usuario: StateFlow<FormularioRegistro> = _usuario
+
     fun onChangeNombre(nombre: String) {
         _usuario.update {
             it.copy(
@@ -18,6 +19,7 @@ class RegistroViewModel : ViewModel() {
             )
         }
     }
+
     fun onChangeEmail(email: String) {
         _usuario.update {
             it.copy(
@@ -26,6 +28,7 @@ class RegistroViewModel : ViewModel() {
             )
         }
     }
+
     fun onChangePassword(password: String) {
         _usuario.update {
             it.copy(
@@ -34,6 +37,7 @@ class RegistroViewModel : ViewModel() {
             )
         }
     }
+
     fun onChangeConfirmar(confirmar: String) {
         _usuario.update {
             it.copy(
@@ -42,9 +46,17 @@ class RegistroViewModel : ViewModel() {
             )
         }
     }
+
+    // Limpia también el error de aceptaTerminos al cambiar el checkbox
     fun onChangeAceptarTerminos(valor: Boolean) {
-        _usuario.update { it.copy(aceptarTerminos = valor) }
+        _usuario.update {
+            it.copy(
+                aceptarTerminos = valor,
+                error = it.error.copy(aceptaTerminos = null)
+            )
+        }
     }
+
     fun validar(): Boolean {
         val f = _usuario.value
         val errores = UsuarioErrores(

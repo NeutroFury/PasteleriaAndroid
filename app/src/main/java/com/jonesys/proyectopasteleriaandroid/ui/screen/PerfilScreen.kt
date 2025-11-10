@@ -53,7 +53,6 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 
-
 @Composable
 fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val isLogged by authViewModel.isLogged.collectAsState()

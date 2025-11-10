@@ -17,8 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.R
-import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBlanco
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
+import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBlanco
+
 
 
 @Composable

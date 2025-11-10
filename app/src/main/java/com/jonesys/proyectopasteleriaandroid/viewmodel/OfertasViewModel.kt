@@ -1,7 +1,16 @@
 package com.jonesys.proyectopasteleriaandroid.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.jonesys.proyectopasteleriaandroid.model.ProductUi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class OfertasViewModel: ViewModel() {
-    //asdasd
+class OfertasViewModel(
+    productosViewModel: ProductosViewModel = ProductosViewModel() // Inyección manual simple
+) : ViewModel() {
+
+    private val _ofertas = MutableStateFlow(
+        productosViewModel.productosUi.value.filter { it.tieneDescuento }
+    )
+    val ofertas: StateFlow<List<ProductUi>> = _ofertas
 }

@@ -67,17 +67,16 @@ fun HomeScreen(navController: NavHostController, authViewModel: AuthViewModel) {
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = ColorTexto,
-                    )
+
+                        )
                     Text(
                         "Bienvenido a nuestra tienda en versión móvil!",
                         fontSize = 13.sp,
-                        color = ColorTexto,
-                    )
+                        color = ColorTexto,)
                     Text(
                         "Apreta el boton para ver nuestros productos disponibles",
                         fontSize = 13.sp,
-                        color = ColorTexto,
-                    )
+                        color = ColorTexto,)
                     Button(
                         onClick = { navController.navigate("productos") },
                         modifier = Modifier.height(36.dp),
@@ -90,8 +89,32 @@ fun HomeScreen(navController: NavHostController, authViewModel: AuthViewModel) {
                     ) {
                         Text("IR!", fontSize = 13.sp)
                     }
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(containerColor = ColorCard),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(10.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        "Conoce sobre aquellos emblematicos ingredientes",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = ColorTexto,
+
+                        )
+                    Text(
+                        "Lee a detalle sobre nuestros ingredientes estrella en nuestras preparaciones",
+                        fontSize = 13.sp,
+                        color = ColorTexto,)
                     Button(
-                        onClick = { navController.navigate("carrito") },
+                        onClick = { navController.navigate("blogUno") },
                         modifier = Modifier.height(36.dp),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -100,7 +123,43 @@ fun HomeScreen(navController: NavHostController, authViewModel: AuthViewModel) {
                         ),
                         shape = RoundedCornerShape(14.dp)
                     ) {
-                        Text("carrito!", fontSize = 13.sp)
+                        Text("IR!", fontSize = 13.sp)
+                    }
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(containerColor = ColorCard),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(10.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        "Conoce sobre este historico hito en la pasteleria chilena!",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = ColorTexto,
+
+                        )
+                    Text(
+                        "Lee a detalle sobre este importante suceso en la historia de la pasteleria chilena",
+                        fontSize = 13.sp,
+                        color = ColorTexto,)
+                    Button(
+                        onClick = { navController.navigate("blogDos") },
+                        modifier = Modifier.height(36.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ColorTexto,
+                            contentColor = ColorMainRosa
+                        ),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Text("IR!", fontSize = 13.sp)
                     }
                 }
             }

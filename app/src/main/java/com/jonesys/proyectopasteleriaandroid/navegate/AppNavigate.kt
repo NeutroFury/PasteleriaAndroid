@@ -49,7 +49,7 @@ fun AppNavigate() {
                 )
             }
         }
-        composable("productos") { Box(Modifier.fillMaxSize()) { ProductosScreen(navController)} }
+        composable("productos") { Box(Modifier.fillMaxSize()) { ProductosScreen(navController, authViewModel)} }
         composable ("perfil"){ Box(Modifier.fillMaxSize()) { PerfilScreen(navController, authViewModel) } }
         composable("ofertas") { Box(Modifier.fillMaxSize()) { OfertasScreen(navController, authViewModel) } }
         composable("carrito") { Box(Modifier.fillMaxSize()) { CarritoScreen(navController, authViewModel) } }

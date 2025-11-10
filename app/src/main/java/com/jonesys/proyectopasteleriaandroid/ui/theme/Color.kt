@@ -15,4 +15,5 @@ val ColorMainRosa = Color(0xFFFDD6E4)
 val ColorMainBeige = Color(0xFFFFF1E6)
 val ColorTexto = Color(0xFF5C2A1E)
 
+val ColorMainBlanco = Color(0xFFFFFFFF)
 val ColorCard = Color(0xFFF6E0F2)

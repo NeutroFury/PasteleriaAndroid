@@ -41,7 +41,7 @@ fun Footer(navController: NavHostController) {
             contentDescription = "Ubicacion",
             modifier = Modifier
                 .size(35.dp)
-                .clickable {  },
+                .clickable { navController.navigate("geo") },
             contentScale = ContentScale.Fit
         )
 

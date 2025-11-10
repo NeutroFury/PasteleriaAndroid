@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jonesys.proyectopasteleriaandroid.ui.screen.BlogDosScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.BlogUnoScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.CarritoScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.GeolocalizacionScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.HomeScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.LoginScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.OfertasScreen
@@ -59,6 +60,9 @@ fun AppNavigate() {
         }
         composable("blogDos") {
             Box(Modifier.fillMaxSize()) { BlogDosScreen(navController) }
+        }
+        composable("geo") {
+            Box(Modifier.fillMaxSize()) { GeolocalizacionScreen(navController) }
         }
 
     }

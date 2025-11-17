@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.model.ProductUi
 import com.jonesys.proyectopasteleriaandroid.ui.components.Footer
 import com.jonesys.proyectopasteleriaandroid.ui.components.Header

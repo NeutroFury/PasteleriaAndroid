@@ -1,4 +1,3 @@
-// kotlin
 package com.jonesys.proyectopasteleriaandroid.navegate
 
 import androidx.compose.runtime.Composable
@@ -22,7 +21,6 @@ import com.jonesys.proyectopasteleriaandroid.ui.screen.RegistroScreen
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.RegistroViewModel
-import androidx.navigation.NavHostController
 
 @Composable
 fun AppNavigate() {

@@ -1,9 +1,7 @@
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +29,6 @@ import com.jonesys.proyectopasteleriaandroid.ui.components.Header
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorCard
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +36,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
-import org.w3c.dom.Text
 
 
 @Composable
@@ -50,8 +46,8 @@ fun BlogUnoScreen(navController: NavHostController, authViewModel: AuthViewModel
     Scaffold(
         containerColor = ColorMainBeige,
         topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
-        bottomBar = { Footer(navController = navController) }
-    ) { innerPadding ->
+        bottomBar = { Footer(navController = navController) })
+    { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

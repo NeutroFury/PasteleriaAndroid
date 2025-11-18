@@ -343,7 +343,7 @@ fun GeolocalizacionScreen(navController: NavHostController){
                     )
                 }
             ) {
-                Text("Conceder Permisos / Actualizar Ubicacion")
+                Text("Conceder Permisos / Ir a nuestra ubicacion")
 
             }
     }

@@ -1,5 +1,7 @@
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -30,13 +33,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -46,17 +54,27 @@ import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.ui.components.Footer
 import com.jonesys.proyectopasteleriaandroid.ui.components.Header
+import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorBotonRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorCard
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBlanco
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
+    val Pacifico = FontFamily(Font(R.font.pacifico_regular))
+    val LatoLight = FontFamily(Font(R.font.lato_light))
+    var username by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var phone by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+
     Scaffold(
         containerColor = ColorMainBeige,
         topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
@@ -73,7 +91,6 @@ fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 .verticalScroll(scroll),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Encabezado decorativo + avatar superpuesto
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,7 +120,6 @@ fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 modifier = Modifier.padding(top = 6.dp, bottom = 12.dp)
             )
 
-            // Contenedor del formulario
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,48 +133,44 @@ fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel)
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    var username by rememberSaveable { mutableStateOf("Pedro") }
-                    var email by rememberSaveable { mutableStateOf("pedroelbkn@gmail.com") }
-                    var phone by rememberSaveable { mutableStateOf("+5694206967") }
-                    var password by rememberSaveable { mutableStateOf("********") }
 
-                    FieldLabel("Nombre de Usuario")
                     OutlinedTextField(
                         value = username,
                         onValueChange = { username = it },
                         singleLine = true,
+                        placeholder = { Text("Pedrito", fontFamily = LatoLight) },
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier.fillMaxWidth(),
                         colors = textFieldColors()
                     )
 
-                    FieldLabel("Correo Electronico")
                     OutlinedTextField(
                         value = email,
                         onValueChange = { email = it },
                         singleLine = true,
+                        placeholder = { Text("pedroelbkn@gmail.com", fontFamily = LatoLight) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier.fillMaxWidth(),
                         colors = textFieldColors()
                     )
 
-                    FieldLabel("Numero celular")
                     OutlinedTextField(
                         value = phone,
                         onValueChange = { phone = it },
                         singleLine = true,
+                        placeholder = { Text("+5694206967", fontFamily = LatoLight) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier.fillMaxWidth(),
                         colors = textFieldColors()
                     )
 
-                    FieldLabel("Contraseña")
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
                         singleLine = true,
+                        placeholder = { Text("********", fontFamily = LatoLight) },
                         visualTransformation = PasswordVisualTransformation(),
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier.fillMaxWidth(),
@@ -166,35 +178,17 @@ fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel)
                     )
 
                     Spacer(Modifier.height(8.dp))
-                    Button(
-                        onClick = { /* Visual */ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = ColorTexto,
-                            contentColor = ColorCard
-                        )
-                    ) {
-                        Text("Actualizar datos", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                    }
+                    Padre(onClear = {
+                        username = ""
+                        email = ""
+                        phone = ""
+                        password = ""
+                    })
                 }
             }
-
             Spacer(Modifier.height(16.dp))
         }
     }
-}
-
-@Composable
-private fun FieldLabel(text: String) {
-    Text(
-        text = text,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Medium,
-        color = ColorTexto
-    )
 }
 
 @Composable
@@ -212,3 +206,60 @@ private fun textFieldColors() = OutlinedTextFieldDefaults.colors(
     focusedPlaceholderColor = ColorTexto.copy(alpha = 0.5f),
     unfocusedPlaceholderColor = ColorTexto.copy(alpha = 0.5f)
 )
+
+@Composable
+fun Padre(onClear: () -> Unit){
+    // declarar la variable Booleana (cambiara estado)
+    var estadoVisible by remember { mutableStateOf(false) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // al hacer click se alterna estadoVisible y luego se ejecuta onClear (después del delay en BotonCargando)
+        BotonCargando(
+            onClick = {
+                estadoVisible = !estadoVisible
+                onClear()
+            }
+        )
+
+    }
+}
+@Composable
+fun BotonCargando(onClick: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var cargando by remember { mutableStateOf(false) }
+
+    Button(
+        onClick = {
+            cargando = true
+            scope.launch {
+                delay(2000)
+                cargando = false
+                Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT).show()
+                onClick()
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth(0.6f)
+            .height(45.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = ColorBotonRosa,
+            contentColor = ColorMainBlanco
+        )
+    ) {
+        if (cargando) {
+            CircularProgressIndicator(
+                color = ColorTexto,
+                modifier = Modifier.size(24.dp),
+                strokeWidth = 2.dp
+            )
+        } else {
+            Text("Actualizar Perfil")
+        }
+    }
+}

@@ -8,7 +8,8 @@ import com.jonesys.proyectopasteleriaandroid.model.FormularioRegistro
 import com.jonesys.proyectopasteleriaandroid.model.UsuarioErrores
 
 class RegistroViewModel : ViewModel() {
-    private val _usuario = MutableStateFlow(FormularioRegistro(aceptarTerminos = false))
+    private val _usuario = MutableStateFlow(FormularioRegistro(aceptarTerminos = false,telefono = ""))
+
     val usuario: StateFlow<FormularioRegistro> = _usuario
 
     fun onChangeNombre(nombre: String) {

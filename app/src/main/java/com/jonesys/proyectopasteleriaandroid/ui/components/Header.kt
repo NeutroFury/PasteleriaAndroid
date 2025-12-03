@@ -1,4 +1,3 @@
-// kotlin
 package com.jonesys.proyectopasteleriaandroid.ui.components
 
 import androidx.compose.foundation.Image
@@ -21,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,9 @@ fun Header(
     isLogged: Boolean = false,
     userName: String? = null
 ) {
+    val Pacifico = FontFamily(Font(R.font.pacifico_regular))
+    val LatoRegular = FontFamily(Font(R.font.lato_regular))
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,8 +60,8 @@ fun Header(
             Spacer(Modifier.width(8.dp))
             Text(
                 text = "Pastelería mil sabores",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                fontFamily = Pacifico,
                 color = ColorTexto,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -68,6 +72,7 @@ fun Header(
             Text(
                 text = "Bienvenid@ ${userName ?: ""}",
                 fontSize = 14.sp,
+                fontFamily = LatoRegular,
                 fontWeight = FontWeight.Medium,
                 color = ColorTexto
             )
@@ -86,7 +91,7 @@ fun Header(
                     ),
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("Iniciar", fontSize = 13.sp)
+                    Text("Iniciar", fontSize = 13.sp, fontFamily = LatoRegular)
                 }
                 Button(
                     onClick = { navController.navigate("registro") },
@@ -98,7 +103,7 @@ fun Header(
                     ),
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("Registrarse", fontSize = 13.sp)
+                    Text("Registrarse", fontSize = 13.sp, fontFamily = LatoRegular)
                 }
             }
         }

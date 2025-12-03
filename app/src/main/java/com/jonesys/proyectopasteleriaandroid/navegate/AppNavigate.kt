@@ -28,25 +28,11 @@ fun AppNavigate() {
     val loginViewModel: LoginViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = "bienvenida") {
-        composable("bienvenida") {
-            Box(Modifier.fillMaxSize()) { HomeScreen(navController, authViewModel) }
-        }
-        composable("login") {
-            Box(Modifier.fillMaxSize()) {
-                LoginScreen(viewModel = loginViewModel, authViewModel = authViewModel, navController = navController)
-            }
-        }
-        composable("registro") {
-            val registroViewModel: RegistroViewModel = viewModel()
-            Box(Modifier.fillMaxSize()) {
-                RegistroScreen(
-                    viewModel = registroViewModel,
-                    authViewModel = authViewModel,
-                    navController = navController
-                )
-            }
-        }
+    NavHost(navController = navController, startDestination = "login") {
+        composable("bienvenida") {Box(Modifier.fillMaxSize()) { HomeScreen(navController, authViewModel) }}
+        composable("login") {Box(Modifier.fillMaxSize()) {LoginScreen(viewModel = loginViewModel, authViewModel = authViewModel, navController = navController)}}
+        composable("registro") {val registroViewModel: RegistroViewModel = viewModel()
+            Box(Modifier.fillMaxSize()) {RegistroScreen(viewModel = registroViewModel,authViewModel = authViewModel,navController = navController)}}
         composable("productos") { Box(Modifier.fillMaxSize()) { ProductosScreen(navController, authViewModel)} }
         composable ("perfil"){ Box(Modifier.fillMaxSize()) { PerfilScreen(navController, authViewModel) } }
         composable("ofertas") { Box(Modifier.fillMaxSize()) { OfertasScreen(navController, authViewModel) } }

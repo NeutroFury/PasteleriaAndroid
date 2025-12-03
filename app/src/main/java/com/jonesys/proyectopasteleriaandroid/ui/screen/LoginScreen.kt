@@ -2,8 +2,10 @@ package com.jonesys.proyectopasteleriaandroid.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,6 +26,9 @@ import androidx.compose.ui.text.font.FontFamily
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTitulos
 import androidx.compose.material3.Text
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 
 
 @Composable
@@ -122,6 +127,54 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
                 ) {
                     Text("Ingresar",fontFamily = Pacifico, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 }
+                Spacer(Modifier.height(16.dp))
+
+                val annotatedText = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)) {
+                        append("¿No tienes cuenta? ")
+                    }
+                    pushStringAnnotation(tag = "REGISTRO", annotation = "registro")
+                    withStyle(style = SpanStyle(color = ColorTitulos, fontWeight = FontWeight.Bold)) {
+                        append("Regístrate aquí")
+                    }
+                    pop()
+                }
+
+                ClickableText(
+                    text = annotatedText,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontFamily = LatoLight),
+                    onClick = { offset ->
+                        annotatedText.getStringAnnotations(tag = "REGISTRO", start = offset, end = offset)
+                            .firstOrNull()?.let {
+                                navController.navigate("registro")
+                            }
+                    }
+                )
+                Spacer(Modifier.height(8.dp))
+
+                Text(
+                    text = "o",
+                    fontFamily = LatoLight,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    fontSize = 14.sp
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                Text(
+                    text = "Continuar como invitado",
+                    fontFamily = LatoLight,
+                    color = ColorTitulos,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.clickable {
+                        authViewModel.setLoggedIn(false, "")
+                        navController.navigate("bienvenida") {
+                            popUpTo("login") { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
     }

@@ -5,7 +5,8 @@ data class FormularioRegistro(
     val password: String = "",
     val confirmarPassword: String = "",
     val error: UsuarioErrores = UsuarioErrores(),
-    val aceptarTerminos: Boolean
+    val aceptarTerminos: Boolean,
+    val telefono: String
 )
 
 

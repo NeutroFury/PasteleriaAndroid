@@ -1,11 +1,9 @@
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,8 +23,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +33,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +47,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.ui.components.Footer
@@ -60,20 +58,23 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBlanco
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainRosa
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
+import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTitulos
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
+import com.jonesys.proyectopasteleriaandroid.viewmodel.PerfilViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+fun PerfilScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel,
+    perfilViewModel: PerfilViewModel = viewModel()
+) {
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
+    val usuario by perfilViewModel.usuario.collectAsState()
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
-    val LatoLight = FontFamily(Font(R.font.lato_light))
-    var username by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var phone by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+    val LatoRegular = FontFamily(Font(R.font.lato_regular))
 
     Scaffold(
         containerColor = ColorMainBeige,
@@ -124,66 +125,95 @@ fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = ColorMainBlanco),
-                shape = RoundedCornerShape(16.dp)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-                    OutlinedTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        singleLine = true,
-                        placeholder = { Text("Pedrito", fontFamily = LatoLight) },
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors()
+                    Text(
+                        text = "Editar Perfil",
+                        fontFamily = Pacifico,
+                        color = ColorTitulos,
+                        fontSize = 28.sp,
+                        modifier = Modifier.padding(bottom = 16.dp)
                     )
 
                     OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        singleLine = true,
-                        placeholder = { Text("pedroelbkn@gmail.com", fontFamily = LatoLight) },
+                        value = usuario.nombre,
+                        onValueChange = perfilViewModel::onChangeNombre,
+                        label = { Text("Nombre", fontFamily = LatoRegular) },
+                        isError = usuario.error.nombre != null,
+                        supportingText = {
+                            usuario.error.nombre?.let {
+                                Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+
+                    Spacer(Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = usuario.email,
+                        onValueChange = perfilViewModel::onChangeEmail,
+                        label = { Text("Correo electrónico", fontFamily = LatoRegular) },
+                        placeholder = { Text("email@ejemplo.com", fontFamily = LatoRegular) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        shape = RoundedCornerShape(10.dp),
+                        isError = usuario.error.email != null,
+                        supportingText = {
+                            usuario.error.email?.let {
+                                Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors()
+                        shape = RoundedCornerShape(8.dp)
                     )
 
+                    Spacer(Modifier.height(12.dp))
+
                     OutlinedTextField(
-                        value = phone,
-                        onValueChange = { phone = it },
-                        singleLine = true,
-                        placeholder = { Text("+5694206967", fontFamily = LatoLight) },
+                        value = usuario.telefono,
+                        onValueChange = perfilViewModel::onChangeTelefono,
+                        label = { Text("Teléfono", fontFamily = LatoRegular) },
+                        placeholder = { Text("+56912345678", fontFamily = LatoRegular) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                        shape = RoundedCornerShape(10.dp),
+                        isError = usuario.error.telefono != null,
+                        supportingText = {
+                            usuario.error.telefono?.let {
+                                Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors()
+                        shape = RoundedCornerShape(8.dp)
                     )
+
+                    Spacer(Modifier.height(12.dp))
 
                     OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        singleLine = true,
-                        placeholder = { Text("********", fontFamily = LatoLight) },
+                        value = usuario.password,
+                        onValueChange = perfilViewModel::onChangePassword,
+                        label = { Text("Contraseña", fontFamily = LatoRegular) },
+                        placeholder = { Text("********", fontFamily = LatoRegular) },
                         visualTransformation = PasswordVisualTransformation(),
-                        shape = RoundedCornerShape(10.dp),
+                        isError = usuario.error.password != null,
+                        supportingText = {
+                            usuario.error.password?.let {
+                                Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = textFieldColors()
+                        shape = RoundedCornerShape(8.dp)
                     )
 
-                    Spacer(Modifier.height(8.dp))
-                    Padre(onClear = {
-                        username = ""
-                        email = ""
-                        phone = ""
-                        password = ""
-                    })
+                    Spacer(Modifier.height(20.dp))
+
+                    BotonActualizar(perfilViewModel = perfilViewModel)
                 }
             }
             Spacer(Modifier.height(16.dp))
@@ -192,55 +222,24 @@ fun PerfilScreen(navController: NavHostController, authViewModel: AuthViewModel)
 }
 
 @Composable
-private fun textFieldColors() = OutlinedTextFieldDefaults.colors(
-    focusedContainerColor = ColorCard,
-    unfocusedContainerColor = ColorCard,
-    disabledContainerColor = ColorCard,
-    focusedBorderColor = ColorTexto.copy(alpha = 0.45f),
-    unfocusedBorderColor = ColorTexto.copy(alpha = 0.25f),
-    cursorColor = ColorTexto,
-    focusedTextColor = ColorTexto,
-    unfocusedTextColor = ColorTexto,
-    focusedLabelColor = ColorTexto,
-    unfocusedLabelColor = ColorTexto,
-    focusedPlaceholderColor = ColorTexto.copy(alpha = 0.5f),
-    unfocusedPlaceholderColor = ColorTexto.copy(alpha = 0.5f)
-)
-
-@Composable
-fun Padre(onClear: () -> Unit){
-    // declarar la variable Booleana (cambiara estado)
-    var estadoVisible by remember { mutableStateOf(false) }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // al hacer click se alterna estadoVisible y luego se ejecuta onClear (después del delay en BotonCargando)
-        BotonCargando(
-            onClick = {
-                estadoVisible = !estadoVisible
-                onClear()
-            }
-        )
-
-    }
-}
-@Composable
-fun BotonCargando(onClick: () -> Unit) {
+fun BotonActualizar(perfilViewModel: PerfilViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var cargando by remember { mutableStateOf(false) }
+    val Pacifico = FontFamily(Font(R.font.pacifico_regular))
+    val LatoRegular = FontFamily(Font(R.font.lato_regular))
 
     Button(
         onClick = {
-            cargando = true
-            scope.launch {
-                delay(2000)
-                cargando = false
-                Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT).show()
-                onClick()
+            if (perfilViewModel.validar()) {
+                cargando = true
+                scope.launch {
+                    delay(2000)
+                    cargando = false
+                    Toast.makeText(context, "Perfil actualizado exitosamente", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Verifique los campos", Toast.LENGTH_SHORT).show()
             }
         },
         modifier = Modifier
@@ -250,16 +249,22 @@ fun BotonCargando(onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(
             containerColor = ColorBotonRosa,
             contentColor = ColorMainBlanco
-        )
+        ),
+        enabled = !cargando
     ) {
         if (cargando) {
             CircularProgressIndicator(
-                color = ColorTexto,
+                color = ColorMainBlanco,
                 modifier = Modifier.size(24.dp),
                 strokeWidth = 2.dp
             )
         } else {
-            Text("Actualizar Perfil")
+            Text(
+                "Actualizar",
+                fontFamily = LatoRegular,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
 }

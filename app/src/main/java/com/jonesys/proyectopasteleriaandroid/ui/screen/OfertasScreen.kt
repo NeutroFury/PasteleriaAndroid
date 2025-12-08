@@ -24,7 +24,6 @@ import com.jonesys.proyectopasteleriaandroid.viewmodel.OfertasViewModel
 fun OfertasScreen(navController: NavHostController, authViewModel: AuthViewModel,vm: OfertasViewModel = viewModel()) {
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
-    val ofertas by vm.ofertas.collectAsState()
 
     Scaffold(
         containerColor = ColorMainBeige,
@@ -49,8 +48,7 @@ fun OfertasScreen(navController: NavHostController, authViewModel: AuthViewModel
                     .fillMaxWidth()
                     .padding(16.dp)
             )
-            ofertas.forEach { ProductCard(product = it) }
-            Spacer(Modifier.height(12.dp))
+
         }
     }
 }

@@ -21,19 +21,21 @@ import com.jonesys.proyectopasteleriaandroid.ui.screen.RegistroScreen
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.LoginViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.RegistroViewModel
+import com.jonesys.proyectopasteleriaandroid.viewmodel.ProductosViewModel
 
 @Composable
 fun AppNavigate() {
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
+    val productosViewModel: ProductosViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "bienvenida") {
         composable("bienvenida") {Box(Modifier.fillMaxSize()) { HomeScreen(navController, authViewModel) }}
         composable("login") {Box(Modifier.fillMaxSize()) {LoginScreen(viewModel = loginViewModel, authViewModel = authViewModel, navController = navController)}}
         composable("registro") {val registroViewModel: RegistroViewModel = viewModel()
             Box(Modifier.fillMaxSize()) {RegistroScreen(viewModel = registroViewModel,authViewModel = authViewModel,navController = navController)}}
-        composable("productos") { Box(Modifier.fillMaxSize()) { ProductosScreen(navController, authViewModel)} }
+        composable("productos") { Box(Modifier.fillMaxSize()) { ProductosScreen(navController, authViewModel, vm = productosViewModel)} }
         composable ("perfil"){ Box(Modifier.fillMaxSize()) { PerfilScreen(navController, authViewModel) } }
         composable("ofertas") { Box(Modifier.fillMaxSize()) { OfertasScreen(navController, authViewModel) } }
         composable("carrito") { Box(Modifier.fillMaxSize()) { CarritoScreen(navController, authViewModel) } }

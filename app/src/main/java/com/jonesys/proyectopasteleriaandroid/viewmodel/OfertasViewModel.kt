@@ -9,8 +9,6 @@ class OfertasViewModel(
     productosViewModel: ProductosViewModel = ProductosViewModel() // Inyección manual simple
 ) : ViewModel() {
 
-    private val _ofertas = MutableStateFlow(
-        productosViewModel.productosUi.value.filter { it.tieneDescuento }
-    )
-    val ofertas: StateFlow<List<ProductUi>> = _ofertas
+
+
 }

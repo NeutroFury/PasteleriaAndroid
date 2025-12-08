@@ -35,6 +35,7 @@ data class GridItemData(
 fun HomeScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
+    val userNombre by authViewModel.userNombre.collectAsState()
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
 
@@ -70,7 +71,7 @@ fun HomeScreen(navController: NavHostController, authViewModel: AuthViewModel) {
 
     Scaffold(
         containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
+        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
         bottomBar = { Footer(navController = navController) }
     ) { innerPadding ->
 

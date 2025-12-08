@@ -28,9 +28,29 @@ fun RegistroScreen(
     navController: NavHostController
 ) {
     val usuario = viewModel.usuario.collectAsState().value
+    val registroExitoso by viewModel.registroExitoso.collectAsState()
+    val mensajeError by viewModel.mensajeError.collectAsState()
     val contexto = LocalContext.current
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
+
+    // Observar el resultado del registro
+    LaunchedEffect(registroExitoso) {
+        when (registroExitoso) {
+            true -> {
+                authViewModel.setLoggedIn(true, usuario.nombre)
+                Toast.makeText(contexto, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                navController.navigate("bienvenida")
+                viewModel.resetRegistroExitoso()
+            }
+            false -> {
+                val mensaje = mensajeError ?: "Error al registrar usuario"
+                Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show()
+                viewModel.resetRegistroExitoso()
+            }
+            null -> { /* No hacer nada */ }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -53,7 +73,6 @@ fun RegistroScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // 🔹 Título
                 Text(
                     text = "Registro de Usuario",
                     fontFamily = Pacifico,
@@ -62,7 +81,6 @@ fun RegistroScreen(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // 🔸 Campo Nombre
                 OutlinedTextField(
                     value = usuario.nombre,
                     onValueChange = viewModel::onChangeNombre,
@@ -79,7 +97,6 @@ fun RegistroScreen(
 
                 Spacer(Modifier.height(12.dp))
 
-                // 🔸 Campo Correo
                 OutlinedTextField(
                     value = usuario.email,
                     onValueChange = viewModel::onChangeEmail,
@@ -97,7 +114,6 @@ fun RegistroScreen(
 
                 Spacer(Modifier.height(12.dp))
 
-                // 🔸 Campo Contraseña
                 OutlinedTextField(
                     value = usuario.password,
                     onValueChange = viewModel::onChangePassword,
@@ -116,7 +132,6 @@ fun RegistroScreen(
 
                 Spacer(Modifier.height(12.dp))
 
-                // 🔸 Confirmar contraseña
                 OutlinedTextField(
                     value = usuario.confirmarPassword,
                     onValueChange = viewModel::onChangeConfirmar,
@@ -135,7 +150,6 @@ fun RegistroScreen(
 
                 Spacer(Modifier.height(12.dp))
 
-                // 🔸 Checkbox de términos
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
@@ -154,13 +168,11 @@ fun RegistroScreen(
 
                 Spacer(Modifier.height(20.dp))
 
-                // 🔹 Botón de registro
                 Button(
                     onClick = {
                         if (viewModel.validar()) {
-                            authViewModel.setLoggedIn(true, usuario.nombre)
-                            navController.navigate("bienvenida")
-                            Toast.makeText(contexto, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                            // Guardar usuario en la base de datos
+                            viewModel.registrarUsuario()
                         } else {
                             Toast.makeText(contexto, "Verifique los campos", Toast.LENGTH_SHORT).show()
                         }

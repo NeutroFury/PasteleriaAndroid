@@ -1,16 +1,27 @@
 package com.jonesys.proyectopasteleriaandroid.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import com.jonesys.proyectopasteleriaandroid.model.FormularioRegistro
+import com.jonesys.proyectopasteleriaandroid.model.Usuario
 import com.jonesys.proyectopasteleriaandroid.model.UsuarioErrores
+import com.jonesys.proyectopasteleriaandroid.repository.UsuarioRepository
 
 class RegistroViewModel : ViewModel() {
     private val _usuario = MutableStateFlow(FormularioRegistro(aceptarTerminos = false,telefono = ""))
-
     val usuario: StateFlow<FormularioRegistro> = _usuario
+
+    private val usuarioRepository = UsuarioRepository()
+
+    private val _registroExitoso = MutableStateFlow<Boolean?>(null)
+    val registroExitoso: StateFlow<Boolean?> = _registroExitoso
+
+    private val _mensajeError = MutableStateFlow<String?>(null)
+    val mensajeError: StateFlow<String?> = _mensajeError
 
     fun onChangeNombre(nombre: String) {
         _usuario.update {
@@ -48,7 +59,6 @@ class RegistroViewModel : ViewModel() {
         }
     }
 
-    // Limpia también el error de aceptaTerminos al cambiar el checkbox
     fun onChangeAceptarTerminos(valor: Boolean) {
         _usuario.update {
             it.copy(
@@ -80,5 +90,34 @@ class RegistroViewModel : ViewModel() {
                     confirmarPassword == null &&
                     aceptaTerminos == null
         }
+    }
+
+    fun registrarUsuario() {
+        viewModelScope.launch {
+            try {
+                val f = _usuario.value
+                val nuevoUsuario = Usuario(
+                    id = null,
+                    nombreUsuario = f.email,
+                    contrasena = f.password,
+                    rol = "CLIENTE",
+                    nombre = f.nombre
+                )
+
+                val exitoso = usuarioRepository.grabarUsuario(nuevoUsuario)
+                _registroExitoso.value = exitoso
+                if (!exitoso) {
+                    _mensajeError.value = "Error al conectar con el servidor. Verifica que el backend esté corriendo."
+                }
+            } catch (e: Exception) {
+                _registroExitoso.value = false
+                _mensajeError.value = "Error: ${e.message}"
+            }
+        }
+    }
+
+    fun resetRegistroExitoso() {
+        _registroExitoso.value = null
+        _mensajeError.value = null
     }
 }

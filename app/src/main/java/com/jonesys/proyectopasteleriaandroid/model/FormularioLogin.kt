@@ -5,4 +5,5 @@ data class FormularioLogin(
     val password: String = "",
     val error: String? = null,
     val isLogin: Boolean = false,
+    val nombre: String? = null
 )

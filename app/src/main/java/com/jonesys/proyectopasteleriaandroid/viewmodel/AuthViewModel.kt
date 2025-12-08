@@ -11,13 +11,18 @@ class AuthViewModel : ViewModel() {
     private val _userName = MutableStateFlow<String?>(null)
     val userName = _userName.asStateFlow()
 
-    fun setLoggedIn(logged: Boolean, name: String? = null) {
+    private val _userNombre = MutableStateFlow<String?>(null)
+    val userNombre = _userNombre.asStateFlow()
+
+    fun setLoggedIn(logged: Boolean, name: String? = null, nombre: String? = null) {
         _isLogged.value = logged
         _userName.value = name
+        _userNombre.value = nombre
     }
 
     fun logout() {
         _isLogged.value = false
         _userName.value = null
+        _userNombre.value = null
     }
 }

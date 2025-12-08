@@ -42,9 +42,10 @@ fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel
 {val scrollState = rememberScrollState()
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
+    val userNombre by authViewModel.userNombre.collectAsState()
     Scaffold(
         containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
+        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
         bottomBar = { Footer(navController = navController) }
     ) { innerPadding ->
         Column(

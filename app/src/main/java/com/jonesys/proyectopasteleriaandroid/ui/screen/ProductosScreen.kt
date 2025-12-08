@@ -36,6 +36,7 @@ import com.jonesys.proyectopasteleriaandroid.model.Producto
 fun ProductosScreen(navController: NavHostController, authViewModel: AuthViewModel, vm: ProductosViewModel = viewModel()) {
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
+    val userNombre by authViewModel.userNombre.collectAsState()
 
     val productos by vm.productos.collectAsState(initial = emptyList<Producto>())
 
@@ -45,7 +46,7 @@ fun ProductosScreen(navController: NavHostController, authViewModel: AuthViewMod
 
     Scaffold(
         containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
+        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
         bottomBar = { Footer(navController = navController) }
     ) { innerPadding ->
         Column(
@@ -92,7 +93,6 @@ fun ProductoCard(producto: Producto, onAddToCart: () -> Unit) {
             modifier = Modifier.padding(24.dp)
         ) {
             val context = LocalContext.current
-            // Resolvemos el ID del recurso drawable dinámicamente usando el nombre de archivo (sin extensión)
             val imageResId = remember(producto.imagenUrl) {
                 val name = producto.imagenUrl.substringBeforeLast(".")
                 context.resources.getIdentifier(name, "drawable", context.packageName)
@@ -108,7 +108,6 @@ fun ProductoCard(producto: Producto, onAddToCart: () -> Unit) {
                     contentScale = ContentScale.Crop
                 )
             } else {
-                // Placeholder en caso de que la imagen no se encuentre en drawable
                 Box(
                     modifier = Modifier
                         .size(200.dp)

@@ -6,13 +6,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import android.util.Patterns
 import com.jonesys.proyectopasteleriaandroid.model.FormularioLogin
+import com.jonesys.proyectopasteleriaandroid.repository.UsuarioRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class LoginViewModel : ViewModel(){
     private val formuLogin = MutableStateFlow(FormularioLogin())
-    
+    private val usuarioRepository = UsuarioRepository()
+
     val FormData: StateFlow<FormularioLogin> = formuLogin.asStateFlow()
+
     fun actualizarEmail(email: String){
         formuLogin.value = formuLogin.value.copy(
             email = email
@@ -34,7 +37,7 @@ class LoginViewModel : ViewModel(){
             error = null,
         )
     }
-    
+
     private fun mensajeError(mensaje: String){
         formuLogin.value = formuLogin.value.copy(
             error = mensaje,
@@ -45,28 +48,52 @@ class LoginViewModel : ViewModel(){
     fun Login(){
         viewModelScope.launch {
             val f = formuLogin.value
+
+            // Validaciones de formato
             if(f.email.length<6){
                 mensajeError("El email debe ser mayor de 6 caracteres")
                 return@launch
-            }else{
-                errorNull()
             }
+
             if(!validarEmail(f.email)){
                 mensajeError("No tiene formato de email")
                 return@launch
-            }else{
-                errorNull()
             }
+
             if(f.password.length<6){
                 mensajeError("La contraseña debe tener al menos 6 caracteres")
                 return@launch
-            }else{
-                errorNull()
             }
-            formuLogin.value = formuLogin.value.copy(
-                isLogin = true,
-                error = null
-            )
+
+            // Obtener todos los usuarios y validar credenciales
+            try {
+                val usuarios = usuarioRepository.recuperarUsuarios()
+
+                // Verificar que se obtuvieron usuarios de la BD
+                if (usuarios.isEmpty()) {
+                    mensajeError("No se pudo conectar con la base de datos")
+                    return@launch
+                }
+
+                // Buscar usuario por email/nombreUsuario y contraseña
+                val usuarioEncontrado = usuarios.find { usuario ->
+                    usuario.nombreUsuario == f.email && usuario.contrasena == f.password
+                }
+
+                if (usuarioEncontrado != null) {
+                    // Login exitoso
+                    formuLogin.value = formuLogin.value.copy(
+                        isLogin = true,
+                        error = null,
+                        nombre = usuarioEncontrado.nombre
+                    )
+                } else {
+                    // Credenciales incorrectas
+                    mensajeError("Email o contraseña incorrectos")
+                }
+            } catch (e: Exception) {
+                mensajeError("Error al conectar con el servidor")
+            }
         }
     }
 }

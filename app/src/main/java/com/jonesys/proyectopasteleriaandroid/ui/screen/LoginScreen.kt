@@ -40,7 +40,7 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
 
     LaunchedEffect(uiState.isLogin) {
         if (uiState.isLogin) {
-            authViewModel.setLoggedIn(true, uiState.email)
+            authViewModel.setLoggedIn(true, uiState.email, uiState.nombre)
             navController.navigate("bienvenida") {
                 popUpTo("login") { inclusive = true }
                 launchSingleTop = true

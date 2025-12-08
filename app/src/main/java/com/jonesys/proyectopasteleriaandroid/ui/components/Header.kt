@@ -35,7 +35,8 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 fun Header(
     navController: NavHostController,
     isLogged: Boolean = false,
-    userName: String? = null
+    userName: String? = null,
+    userNombre: String? = null
 ) {
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
@@ -70,7 +71,7 @@ fun Header(
 
         if (isLogged) {
             Text(
-                text = "Bienvenid@ ${userName ?: ""}",
+                text = "Bienvenid@ ${userNombre ?: userName ?: ""}",
                 fontSize = 14.sp,
                 fontFamily = LatoRegular,
                 fontWeight = FontWeight.Medium,

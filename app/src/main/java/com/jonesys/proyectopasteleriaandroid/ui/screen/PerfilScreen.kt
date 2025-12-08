@@ -72,13 +72,14 @@ fun PerfilScreen(
 ) {
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
+    val userNombre by authViewModel.userNombre.collectAsState()
     val usuario by perfilViewModel.usuario.collectAsState()
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
 
     Scaffold(
         containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName) },
+        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
         bottomBar = { Footer(navController = navController) }
     ) { innerPadding ->
         val scroll = rememberScrollState()

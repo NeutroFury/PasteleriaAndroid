@@ -1,4 +1,3 @@
-// kotlin
 package com.jonesys.proyectopasteleriaandroid.ui.screen
 
 import androidx.compose.foundation.Image
@@ -7,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,55 +26,82 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.jonesys.proyectopasteleriaandroid.ui.components.Footer
-import com.jonesys.proyectopasteleriaandroid.ui.components.Header
+import com.jonesys.proyectopasteleriaandroid.ui.components.ScreenWithDrawer
 import com.jonesys.proyectopasteleriaandroid.ui.theme.*
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.ProductosViewModel
+import com.jonesys.proyectopasteleriaandroid.viewmodel.CarritoViewModel
 import com.jonesys.proyectopasteleriaandroid.model.Producto
 
 @Composable
-fun ProductosScreen(navController: NavHostController, authViewModel: AuthViewModel, vm: ProductosViewModel = viewModel()) {
-    val isLogged by authViewModel.isLogged.collectAsState()
-    val userName by authViewModel.userName.collectAsState()
-    val userNombre by authViewModel.userNombre.collectAsState()
-
+fun ProductosScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel,
+    vm: ProductosViewModel = viewModel(),
+    carritoViewModel: CarritoViewModel = viewModel()
+) {
+    val userId by authViewModel.userId.collectAsState()
     val productos by vm.productos.collectAsState(initial = emptyList<Producto>())
 
     LaunchedEffect(Unit) {
         vm.cargarProductos()
     }
 
-    Scaffold(
-        containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
-        bottomBar = { Footer(navController = navController) }
+    ScreenWithDrawer(
+        navController = navController,
+        authViewModel = authViewModel
     ) { innerPadding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .background(ColorMainBeige)
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Text(
-                "Productos",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall,
-                color = ColorTitulos,
-                textAlign = TextAlign.Center
-            )
-
-            for (producto in productos) {
-                ProductoCard(
-                    producto = producto,
-                    onAddToCart = { /* TODO: Implementar agregar al carrito */ }
-                )
+        Scaffold(
+            containerColor = ColorMainBeige,
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { navController.navigate("carrito") },
+                    containerColor = ColorBotonRosa,
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "Ir al carrito",
+                        tint = ColorMainBlanco
+                    )
+                }
             }
+        ) { scaffoldPadding ->
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(ColorMainBeige)
+                    .padding(innerPadding)
+                    .padding(scaffoldPadding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    "Productos",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = ColorTitulos,
+                    textAlign = TextAlign.Center
+                )
 
-            Spacer(Modifier.height(12.dp))
+                for (producto in productos) {
+                    ProductoCard(
+                        producto = producto,
+                        onAddToCart = {
+                            userId?.let { id ->
+                                carritoViewModel.agregarProductoAlCarrito(
+                                    usuarioId = id,
+                                    producto = producto,
+                                    cantidad = 1
+                                )
+                            }
+                        }
+                    )
+                }
+
+                Spacer(Modifier.height(12.dp))
+            }
         }
     }
 }
@@ -142,9 +170,9 @@ fun ProductoCard(producto: Producto, onAddToCart: () -> Unit) {
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "$${producto.precio.toInt()}", 
+                text = "$${producto.precio.toInt()}",
                 style = MaterialTheme.typography.headlineMedium,
-                color = ColorTitulos, 
+                color = ColorTitulos,
                 fontWeight = FontWeight.Bold
             )
 

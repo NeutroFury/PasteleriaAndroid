@@ -2,6 +2,7 @@ package com.jonesys.proyectopasteleriaandroid.repository
 
 import com.jonesys.proyectopasteleriaandroid.model.Usuario
 import com.jonesys.proyectopasteleriaandroid.remote.RetrofitInstanceUsuario
+import retrofit2.Response
 
 class UsuarioRepository {
 
@@ -47,4 +48,27 @@ class UsuarioRepository {
             null
         }
     }
+
+    suspend fun login(email: String, password: String): Response<Usuario>? {
+        val response = RetrofitInstanceUsuario.api.getUsuario()
+
+        if (response.isSuccessful) {
+            val usuarios = response.body()
+            val usuario = usuarios?.find {
+                it.nombreUsuario == email && it.contrasena == password
+            }
+
+            return if (usuario != null) {
+                Response.success(usuario)
+            } else {
+                null
+            }
+        }
+        return null
+    }
+
+    suspend fun register(usuario: Usuario): Response<Usuario> {
+        return RetrofitInstanceUsuario.api.saveUsuario(usuario)
+    }
+
 }

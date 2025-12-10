@@ -12,8 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,7 +40,8 @@ fun Header(
     navController: NavHostController,
     isLogged: Boolean = false,
     userName: String? = null,
-    userNombre: String? = null
+    userNombre: String? = null,
+    onMenuClick: () -> Unit = {}
 ) {
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
@@ -48,6 +53,19 @@ fun Header(
             .padding(horizontal = 16.dp, vertical = 30.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        IconButton(
+            onClick = onMenuClick,
+            modifier = Modifier.size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                contentDescription = "Menú",
+                tint = ColorTexto
+            )
+        }
+
+        Spacer(Modifier.width(8.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.weight(1f)

@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,23 +29,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.jonesys.proyectopasteleriaandroid.R
-import com.jonesys.proyectopasteleriaandroid.ui.components.Footer
-import com.jonesys.proyectopasteleriaandroid.ui.components.Header
+import com.jonesys.proyectopasteleriaandroid.ui.components.ScreenWithDrawer
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorCard
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 
 @Composable
-fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel)
-{val scrollState = rememberScrollState()
-    val isLogged by authViewModel.isLogged.collectAsState()
-    val userName by authViewModel.userName.collectAsState()
-    val userNombre by authViewModel.userNombre.collectAsState()
-    Scaffold(
-        containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
-        bottomBar = { Footer(navController = navController) }
+fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+    val scrollState = rememberScrollState()
+    ScreenWithDrawer(
+        navController = navController,
+        authViewModel = authViewModel
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -63,7 +57,8 @@ fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
-                    modifier = Modifier.verticalScroll(scrollState)
+                    modifier = Modifier
+                        .verticalScroll(scrollState)
                         .padding(10.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -81,7 +76,8 @@ fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel
                         color = ColorTexto
                     )
                     Spacer(Modifier.height(13.dp))
-                    Text("El secreto del éxito no fue solo la receta, sino la coordinación y el trabajo en equipo. Cada capa debía colocarse con precisión, y cada kilo de crema batida era aplicado como si se tratara de una obra de arte. El pueblo entero colaboró: unos aportaban ingredientes, otros decoraban, y muchos más ayudaban a mantener la organización.",
+                    Text(
+                        "El secreto del éxito no fue solo la receta, sino la coordinación y el trabajo en equipo. Cada capa debía colocarse con precisión, y cada kilo de crema batida era aplicado como si se tratara de una obra de arte. El pueblo entero colaboró: unos aportaban ingredientes, otros decoraban, y muchos más ayudaban a mantener la organización.",
                         fontSize = 16.sp,
                         color = ColorTexto
                     )
@@ -91,11 +87,11 @@ fun BlogDosScreen(navController: NavHostController, authViewModel: AuthViewModel
                         modifier = Modifier.size(345.dp),
                         contentScale = ContentScale.Fit
                     )
-                    Text("Finalmente, tras horas de esfuerzo, la torta quedó lista: una creación monumental que rompió el récord nacional. No solo fue un logro gastronómico, sino también un símbolo de unión y orgullo colectivo."
-                        ,fontSize = 16.sp,
+                    Text(
+                        "Finalmente, tras horas de esfuerzo, la torta quedó lista: una creación monumental que rompió el récord nacional. No solo fue un logro gastronómico, sino también un símbolo de unión y orgullo colectivo.",
+                        fontSize = 16.sp,
                         color = ColorTexto
                     )
-
                 }
             }
         }

@@ -2,27 +2,33 @@ package com.jonesys.proyectopasteleriaandroid.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel : ViewModel() {
+
     private val _isLogged = MutableStateFlow(false)
-    val isLogged = _isLogged.asStateFlow()
+    val isLogged: StateFlow<Boolean> = _isLogged
 
-    private val _userName = MutableStateFlow<String?>(null)
-    val userName = _userName.asStateFlow()
+    private val _userName = MutableStateFlow("")
+    val userName: StateFlow<String> = _userName
 
-    private val _userNombre = MutableStateFlow<String?>(null)
-    val userNombre = _userNombre.asStateFlow()
+    private val _userNombre = MutableStateFlow("")
+    val userNombre: StateFlow<String> = _userNombre
 
-    fun setLoggedIn(logged: Boolean, name: String? = null, nombre: String? = null) {
-        _isLogged.value = logged
-        _userName.value = name
-        _userNombre.value = nombre
+    private val _userId = MutableStateFlow<Long?>(null)
+    val userId: StateFlow<Long?> = _userId
+
+    fun login(userId: Long, userName: String, userNombre: String) {
+        _userId.value = userId
+        _userName.value = userName
+        _userNombre.value = userNombre
+        _isLogged.value = true
     }
 
     fun logout() {
+        _userId.value = null
+        _userName.value = ""
+        _userNombre.value = ""
         _isLogged.value = false
-        _userName.value = null
-        _userNombre.value = null
     }
 }

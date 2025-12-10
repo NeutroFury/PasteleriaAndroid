@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,35 +23,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.jonesys.proyectopasteleriaandroid.ui.components.Footer
-import com.jonesys.proyectopasteleriaandroid.ui.components.Header
+import com.jonesys.proyectopasteleriaandroid.ui.components.ScreenWithDrawer
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorCard
-import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorMainBeige
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 
-
 @Composable
-fun BlogUnoScreen(navController: NavHostController, authViewModel: AuthViewModel)
-{val scrollState = rememberScrollState()
-    val isLogged by authViewModel.isLogged.collectAsState()
-    val userName by authViewModel.userName.collectAsState()
-    val userNombre by authViewModel.userNombre.collectAsState()
-    Scaffold(
-        containerColor = ColorMainBeige,
-        topBar = { Header(navController = navController, isLogged = isLogged, userName = userName, userNombre = userNombre) },
-        bottomBar = { Footer(navController = navController) })
-    { innerPadding ->
+fun BlogUnoScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+    val scrollState = rememberScrollState()
+
+    ScreenWithDrawer(
+        navController = navController,
+        authViewModel = authViewModel
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(ColorMainBeige)
                 .padding(innerPadding)
                 .statusBarsPadding()
         ) {
@@ -64,7 +54,8 @@ fun BlogUnoScreen(navController: NavHostController, authViewModel: AuthViewModel
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
-                    modifier = Modifier.verticalScroll(scrollState)
+                    modifier = Modifier
+                        .verticalScroll(scrollState)
                         .padding(10.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -82,51 +73,62 @@ fun BlogUnoScreen(navController: NavHostController, authViewModel: AuthViewModel
                         color = ColorTexto
                     )
                     Spacer(Modifier.height(13.dp))
-                    Text("Manjar"
-                        ,fontSize = 16.sp,
+                    Text(
+                        "Manjar",
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = ColorTexto
                     )
-                    Text("El manjar es una especie de dulce de leche que se utiliza en muchas recetas de repostería chilena, como la torta de mil hojas y los alfajores.",
+                    Text(
+                        "El manjar es una especie de dulce de leche que se utiliza en muchas recetas de repostería chilena, como la torta de mil hojas y los alfajores.",
                         fontSize = 16.sp,
                         color = ColorTexto
                     )
                     Spacer(Modifier.height(13.dp))
-                    Text("Chirimoya",
+                    Text(
+                        "Chirimoya",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = ColorTexto
                     )
-                    Text("La chirimoya es una fruta tropical que se utiliza en postres como la chirimoya rellena y la torta de chirimoya.",
+                    Text(
+                        "La chirimoya es una fruta tropical que se utiliza en postres como la chirimoya rellena y la torta de chirimoya.",
                         fontSize = 16.sp,
                         color = ColorTexto
                     )
                     Spacer(Modifier.height(13.dp))
-                    Text("Nueces",
+                    Text(
+                        "Nueces",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = ColorTexto
                     )
-                    Text("Las nueces son un ingrediente común en la repostería chilena, especialmente en la torta de nueces y los alfajores."
-                    ,fontSize = 16.sp,
-                        color = ColorTexto)
-                    Spacer(Modifier.height(13.dp))
-                    Text("Frutas secas",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = ColorTexto
-                    )
-                    Text("Las frutas secas como las pasas y los higos se utilizan en muchas recetas de repostería chilena, como la torta de pasas y nueces.",
+                    Text(
+                        "Las nueces son un ingrediente común en la repostería chilena, especialmente en la torta de nueces y los alfajores.",
                         fontSize = 16.sp,
                         color = ColorTexto
                     )
                     Spacer(Modifier.height(13.dp))
-                    Text("Harina de maíz",
+                    Text(
+                        "Frutas secas",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = ColorTexto
                     )
-                    Text("La harina de maíz se utiliza en algunas recetas de repostería chilena, como el mote con huesillo y la torta de choclo.",
+                    Text(
+                        "Las frutas secas como las pasas y los higos se utilizan en muchas recetas de repostería chilena, como la torta de pasas y nueces.",
+                        fontSize = 16.sp,
+                        color = ColorTexto
+                    )
+                    Spacer(Modifier.height(13.dp))
+                    Text(
+                        "Harina de maíz",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = ColorTexto
+                    )
+                    Text(
+                        "La harina de maíz se utiliza en algunas recetas de repostería chilena, como el mote con huesillo y la torta de choclo.",
                         fontSize = 16.sp,
                         color = ColorTexto
                     )
@@ -138,11 +140,11 @@ fun BlogUnoScreen(navController: NavHostController, authViewModel: AuthViewModel
                         contentScale = ContentScale.Fit
                     )
                     Spacer(Modifier.height(15.dp))
-                    Text("En resumen, la repostería chilena utiliza una variedad de ingredientes típicos que le dan su sabor único y delicioso. Desde el manjar hasta las frutas secas, estos ingredientes son esenciales para crear los postres tradicionales que tanto gustan en Chile."
-                        ,fontSize = 16.sp,
+                    Text(
+                        "En resumen, la repostería chilena utiliza una variedad de ingredientes típicos que le dan su sabor único y delicioso. Desde el manjar hasta las frutas secas, estos ingredientes son esenciales para crear los postres tradicionales que tanto gustan en Chile.",
+                        fontSize = 16.sp,
                         color = ColorTexto
                     )
-
                 }
             }
         }

@@ -30,17 +30,26 @@ fun RegistroScreen(
     val usuario = viewModel.usuario.collectAsState().value
     val registroExitoso by viewModel.registroExitoso.collectAsState()
     val mensajeError by viewModel.mensajeError.collectAsState()
+    val usuarioRegistrado by viewModel.usuarioRegistrado.collectAsState()
     val contexto = LocalContext.current
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
 
-    // Observar el resultado del registro
     LaunchedEffect(registroExitoso) {
         when (registroExitoso) {
             true -> {
-                authViewModel.setLoggedIn(true, usuario.nombre)
+                usuarioRegistrado?.let { user ->
+                    authViewModel.login(
+                        userId = user.id ?: 0,
+                        userName = user.nombreUsuario,
+                        userNombre = user.nombre
+                    )
+                }
                 Toast.makeText(contexto, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                navController.navigate("bienvenida")
+                navController.navigate("bienvenida") {
+                    popUpTo("registro") { inclusive = true }
+                    launchSingleTop = true
+                }
                 viewModel.resetRegistroExitoso()
             }
             false -> {
@@ -48,7 +57,7 @@ fun RegistroScreen(
                 Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show()
                 viewModel.resetRegistroExitoso()
             }
-            null -> { /* No hacer nada */ }
+            null -> { }
         }
     }
 
@@ -58,7 +67,6 @@ fun RegistroScreen(
             .background(ColorMainBeige),
         contentAlignment = Alignment.Center
     ) {
-
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
@@ -171,7 +179,6 @@ fun RegistroScreen(
                 Button(
                     onClick = {
                         if (viewModel.validar()) {
-                            // Guardar usuario en la base de datos
                             viewModel.registrarUsuario()
                         } else {
                             Toast.makeText(contexto, "Verifique los campos", Toast.LENGTH_SHORT).show()

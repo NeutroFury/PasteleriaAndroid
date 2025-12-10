@@ -30,7 +30,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 
-
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navController: NavHostController) {
     val uiState by viewModel.FormData.collectAsState()
@@ -40,7 +39,11 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
 
     LaunchedEffect(uiState.isLogin) {
         if (uiState.isLogin) {
-            authViewModel.setLoggedIn(true, uiState.email, uiState.nombre)
+            authViewModel.login(
+                userId = uiState.userId,
+                userName = uiState.email,
+                userNombre = uiState.nombre ?: ""
+            )
             navController.navigate("bienvenida") {
                 popUpTo("login") { inclusive = true }
                 launchSingleTop = true
@@ -69,7 +72,6 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Título
                 Text(
                     text = "Iniciar Sesión",
                     fontFamily = Pacifico,
@@ -78,7 +80,6 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Campo email
                 OutlinedTextField(
                     value = uiState.email,
                     onValueChange = { viewModel.actualizarEmail(it) },
@@ -92,7 +93,6 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
 
                 Spacer(Modifier.height(12.dp))
 
-                // Campo contraseña
                 OutlinedTextField(
                     value = uiState.password,
                     onValueChange = { viewModel.actualizarPassword(it) },
@@ -107,13 +107,11 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
 
                 Spacer(Modifier.height(20.dp))
 
-                // Error
                 uiState.error?.let {
                     Text(it, color = MaterialTheme.colorScheme.error)
                     Spacer(Modifier.height(8.dp))
                 }
 
-                // Botón
                 Button(
                     onClick = { viewModel.Login() },
                     modifier = Modifier
@@ -125,7 +123,7 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
                         contentColor = ColorMainBlanco
                     )
                 ) {
-                    Text("Ingresar",fontFamily = Pacifico, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Text("Ingresar", fontFamily = Pacifico, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 }
                 Spacer(Modifier.height(16.dp))
 
@@ -168,7 +166,7 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.clickable {
-                        authViewModel.setLoggedIn(false, "")
+                        authViewModel.logout()
                         navController.navigate("bienvenida") {
                             popUpTo("login") { inclusive = true }
                             launchSingleTop = true

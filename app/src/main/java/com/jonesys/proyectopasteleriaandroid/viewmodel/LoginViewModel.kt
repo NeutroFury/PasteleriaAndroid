@@ -82,11 +82,15 @@ class LoginViewModel : ViewModel(){
 
                 if (usuarioEncontrado != null) {
                     // Login exitoso
-                    formuLogin.value = formuLogin.value.copy(
-                        isLogin = true,
-                        error = null,
-                        nombre = usuarioEncontrado.nombre
-                    )
+                    if (usuarioEncontrado != null) {
+                        // Login exitoso
+                        formuLogin.value = formuLogin.value.copy(
+                            isLogin = true,
+                            error = null,
+                            userId = usuarioEncontrado.id ?: 0,
+                            nombre = usuarioEncontrado.nombre
+                        )
+                    }
                 } else {
                     // Credenciales incorrectas
                     mensajeError("Email o contraseña incorrectos")

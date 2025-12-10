@@ -12,7 +12,7 @@ import com.jonesys.proyectopasteleriaandroid.model.UsuarioErrores
 import com.jonesys.proyectopasteleriaandroid.repository.UsuarioRepository
 
 class RegistroViewModel : ViewModel() {
-    private val _usuario = MutableStateFlow(FormularioRegistro(aceptarTerminos = false,telefono = ""))
+    private val _usuario = MutableStateFlow(FormularioRegistro(aceptarTerminos = false, telefono = ""))
     val usuario: StateFlow<FormularioRegistro> = _usuario
 
     private val usuarioRepository = UsuarioRepository()
@@ -22,6 +22,9 @@ class RegistroViewModel : ViewModel() {
 
     private val _mensajeError = MutableStateFlow<String?>(null)
     val mensajeError: StateFlow<String?> = _mensajeError
+
+    private val _usuarioRegistrado = MutableStateFlow<Usuario?>(null)
+    val usuarioRegistrado: StateFlow<Usuario?> = _usuarioRegistrado
 
     fun onChangeNombre(nombre: String) {
         _usuario.update {
@@ -104,10 +107,14 @@ class RegistroViewModel : ViewModel() {
                     nombre = f.nombre
                 )
 
-                val exitoso = usuarioRepository.grabarUsuario(nuevoUsuario)
-                _registroExitoso.value = exitoso
-                if (!exitoso) {
-                    _mensajeError.value = "Error al conectar con el servidor. Verifica que el backend esté corriendo."
+                val response = usuarioRepository.register(nuevoUsuario)
+                if (response.isSuccessful) {
+                    _usuarioRegistrado.value = response.body()
+                    _registroExitoso.value = true
+                    _mensajeError.value = null
+                } else {
+                    _registroExitoso.value = false
+                    _mensajeError.value = "Error al registrar: ${response.message()}"
                 }
             } catch (e: Exception) {
                 _registroExitoso.value = false
@@ -119,5 +126,6 @@ class RegistroViewModel : ViewModel() {
     fun resetRegistroExitoso() {
         _registroExitoso.value = null
         _mensajeError.value = null
+        _usuarioRegistrado.value = null
     }
 }

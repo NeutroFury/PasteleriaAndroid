@@ -1,15 +1,40 @@
 package com.jonesys.proyectopasteleriaandroid.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.jonesys.proyectopasteleriaandroid.model.FormuPerfil
 import com.jonesys.proyectopasteleriaandroid.model.PerfilErrores
+import com.jonesys.proyectopasteleriaandroid.model.Usuario
+import com.jonesys.proyectopasteleriaandroid.repository.UsuarioRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class PerfilViewModel: ViewModel() {
     private val _usuario = MutableStateFlow(FormuPerfil())
     val usuario: StateFlow<FormuPerfil> = _usuario
+
+    private val repository = UsuarioRepository()
+
+    private var usuarioId: Long? = null
+
+    fun cargarUsuario(id: Long) {
+        usuarioId = id
+        viewModelScope.launch {
+            val response = repository.recuperarUsuarios()
+            val user = response.find { it.id == id }
+            user?.let {
+                _usuario.update { _ ->
+                    FormuPerfil(
+                        nombre = it.nombre,
+                        nombreUsuario = it.nombreUsuario,
+                        contrasena = it.contrasena
+                    )
+                }
+            }
+        }
+    }
 
     fun onChangeNombre(nombre: String) {
         _usuario.update {
@@ -20,29 +45,20 @@ class PerfilViewModel: ViewModel() {
         }
     }
 
-    fun onChangeEmail(email: String) {
+    fun onChangeNombreUsuario(nombreUsuario: String) {
         _usuario.update {
             it.copy(
-                email = email,
-                error = it.error.copy(email = null),
+                nombreUsuario = nombreUsuario,
+                error = it.error.copy(nombreUsuario = null),
             )
         }
     }
 
-    fun onChangePassword(password: String) {
+    fun onChangeContrasena(contrasena: String) {
         _usuario.update {
             it.copy(
-                password = password,
-                error = it.error.copy(password = null),
-            )
-        }
-    }
-
-    fun onChangeTelefono(telefono: String) {
-        _usuario.update {
-            it.copy(
-                telefono = telefono,
-                error = it.error.copy(telefono = null),
+                contrasena = contrasena,
+                error = it.error.copy(contrasena = null),
             )
         }
     }
@@ -51,17 +67,37 @@ class PerfilViewModel: ViewModel() {
         val f = _usuario.value
         val errores = PerfilErrores(
             nombre = if (f.nombre.isBlank()) "Nombre vacío" else null,
-            email = if (f.email.isBlank() || !f.email.contains("@")) "Correo inválido" else null,
-            password = if (f.password.isBlank()) "Contraseña vacía" else null,
-            telefono = if (f.telefono.isBlank()) "Teléfono vacío" else null,
+            nombreUsuario = if (f.nombreUsuario.isBlank()) "Nombre de usuario vacío" else null,
+            contrasena = if (f.contrasena.isBlank()) "Contraseña vacía" else null,
         )
         _usuario.update { it.copy(error = errores) }
 
         return errores.run {
             nombre == null &&
-                    email == null &&
-                    password == null &&
-                    telefono == null
+                    nombreUsuario == null &&
+                    contrasena == null
         }
     }
+
+    suspend fun actualizarPerfilConId(userId: Long): Boolean {
+        val u = _usuario.value
+
+        return try {
+
+            val response = repository.recuperarUsuarios()
+            val usuarioActual = response.find { it.id == userId } ?: return false
+
+            val usuarioActualizado = Usuario(
+                id = userId,
+                nombre = u.nombre,
+                nombreUsuario = u.nombreUsuario,
+                contrasena = u.contrasena,
+                rol = usuarioActual.rol
+            )
+            repository.updateUsuario(usuarioActualizado) != null
+        } catch (e: Exception) {
+            false
+        }
+    }
+
 }

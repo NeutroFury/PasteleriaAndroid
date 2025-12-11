@@ -32,6 +32,8 @@ import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.ProductosViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.CarritoViewModel
 import com.jonesys.proyectopasteleriaandroid.model.Producto
+import kotlin.compareTo
+import kotlin.toString
 
 @Composable
 fun ProductosScreen(
@@ -42,37 +44,23 @@ fun ProductosScreen(
 ) {
     val userId by authViewModel.userId.collectAsState()
     val productos by vm.productos.collectAsState(initial = emptyList<Producto>())
+    val carritoItems by carritoViewModel.carritoItems.collectAsState()
+    val totalItems = carritoItems.sumOf { it.cantidad }
 
     LaunchedEffect(Unit) {
         vm.cargarProductos()
     }
 
-    ScreenWithDrawer(
-        navController = navController,
-        authViewModel = authViewModel
-    ) { innerPadding ->
-        Scaffold(
-            containerColor = ColorMainBeige,
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { navController.navigate("carrito") },
-                    containerColor = ColorBotonRosa,
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "Ir al carrito",
-                        tint = ColorMainBlanco
-                    )
-                }
-            }
-        ) { scaffoldPadding ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        ScreenWithDrawer(
+            navController = navController,
+            authViewModel = authViewModel
+        ) { innerPadding ->
             Column(
                 Modifier
                     .fillMaxSize()
                     .background(ColorMainBeige)
                     .padding(innerPadding)
-                    .padding(scaffoldPadding)
                     .verticalScroll(rememberScrollState())
             ) {
                 Text(
@@ -100,11 +88,41 @@ fun ProductosScreen(
                     )
                 }
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(80.dp))
             }
         }
+
+        if (totalItems > 0) {
+            FloatingActionButton(
+                onClick = { navController.navigate("carrito") },
+                containerColor = ColorBotonRosa,
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 100.dp, end = 16.dp)
+            ) {
+                BadgedBox(
+                    badge = {
+                        Badge(
+                            containerColor = Color.Red,
+                            contentColor = ColorMainBlanco
+                        ) {
+                            Text(text = totalItems.toString())
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "Ir al carrito",
+                        tint = ColorMainBlanco
+                    )
+                }
+            }
+        }
+
     }
 }
+
 
 @Composable
 fun ProductoCard(producto: Producto, onAddToCart: () -> Unit) {

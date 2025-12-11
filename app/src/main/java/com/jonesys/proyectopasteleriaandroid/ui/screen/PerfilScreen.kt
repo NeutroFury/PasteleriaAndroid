@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +27,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,8 +60,9 @@ import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTexto
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTitulos
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
 import com.jonesys.proyectopasteleriaandroid.viewmodel.PerfilViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+
 
 @Composable
 fun PerfilScreen(
@@ -73,9 +73,16 @@ fun PerfilScreen(
     val isLogged by authViewModel.isLogged.collectAsState()
     val userName by authViewModel.userName.collectAsState()
     val userNombre by authViewModel.userNombre.collectAsState()
+    val userId by authViewModel.userId.collectAsState()
     val usuario by perfilViewModel.usuario.collectAsState()
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
+
+    LaunchedEffect(userId) {
+        userId?.let { id ->
+            perfilViewModel.cargarUsuario(id)
+        }
+    }
 
     Scaffold(
         containerColor = ColorMainBeige,
@@ -161,50 +168,14 @@ fun PerfilScreen(
                     Spacer(Modifier.height(12.dp))
 
                     OutlinedTextField(
-                        value = usuario.email,
-                        onValueChange = perfilViewModel::onChangeEmail,
-                        label = { Text("Correo electrónico", fontFamily = LatoRegular) },
-                        placeholder = { Text("email@ejemplo.com", fontFamily = LatoRegular) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        isError = usuario.error.email != null,
-                        supportingText = {
-                            usuario.error.email?.let {
-                                Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-
-                    Spacer(Modifier.height(12.dp))
-
-                    OutlinedTextField(
-                        value = usuario.telefono,
-                        onValueChange = perfilViewModel::onChangeTelefono,
-                        label = { Text("Teléfono", fontFamily = LatoRegular) },
-                        placeholder = { Text("+56912345678", fontFamily = LatoRegular) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                        isError = usuario.error.telefono != null,
-                        supportingText = {
-                            usuario.error.telefono?.let {
-                                Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-
-                    Spacer(Modifier.height(12.dp))
-
-                    OutlinedTextField(
-                        value = usuario.password,
-                        onValueChange = perfilViewModel::onChangePassword,
+                        value = usuario.contrasena,
+                        onValueChange = perfilViewModel::onChangeContrasena,
                         label = { Text("Contraseña", fontFamily = LatoRegular) },
                         placeholder = { Text("********", fontFamily = LatoRegular) },
                         visualTransformation = PasswordVisualTransformation(),
-                        isError = usuario.error.password != null,
+                        isError = usuario.error.contrasena != null,
                         supportingText = {
-                            usuario.error.password?.let {
+                            usuario.error.contrasena?.let {
                                 Text(it, color = MaterialTheme.colorScheme.error, fontFamily = LatoRegular)
                             }
                         },
@@ -214,7 +185,7 @@ fun PerfilScreen(
 
                     Spacer(Modifier.height(20.dp))
 
-                    BotonActualizar(perfilViewModel = perfilViewModel)
+                    BotonActualizar(perfilViewModel = perfilViewModel, authViewModel = authViewModel)
                 }
             }
             Spacer(Modifier.height(16.dp))
@@ -223,11 +194,10 @@ fun PerfilScreen(
 }
 
 @Composable
-fun BotonActualizar(perfilViewModel: PerfilViewModel) {
+fun BotonActualizar(perfilViewModel: PerfilViewModel, authViewModel: AuthViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var cargando by remember { mutableStateOf(false) }
-    val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
 
     Button(
@@ -235,9 +205,20 @@ fun BotonActualizar(perfilViewModel: PerfilViewModel) {
             if (perfilViewModel.validar()) {
                 cargando = true
                 scope.launch {
-                    delay(2000)
-                    cargando = false
-                    Toast.makeText(context, "Perfil actualizado exitosamente", Toast.LENGTH_SHORT).show()
+                    val userId = authViewModel.userId.value
+                    if (userId != null) {
+                        val exito = perfilViewModel.actualizarPerfilConId(userId)
+                        delay(1000)
+                        cargando = false
+                        if (exito) {
+                            Toast.makeText(context, "Perfil actualizado exitosamente", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Error al actualizar perfil", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        cargando = false
+                        Toast.makeText(context, "Error: Usuario no identificado", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 Toast.makeText(context, "Verifique los campos", Toast.LENGTH_SHORT).show()
@@ -269,3 +250,5 @@ fun BotonActualizar(perfilViewModel: PerfilViewModel) {
         }
     }
 }
+
+

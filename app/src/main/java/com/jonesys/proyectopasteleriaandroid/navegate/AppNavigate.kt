@@ -30,7 +30,7 @@ fun AppNavigate() {
     val authViewModel: AuthViewModel = viewModel()
     val productosViewModel: ProductosViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = "bienvenida") {
+    NavHost(navController = navController, startDestination = "login") {
         composable("bienvenida") {Box(Modifier.fillMaxSize()) { HomeScreen(navController, authViewModel) }}
         composable("login") {Box(Modifier.fillMaxSize()) {LoginScreen(viewModel = loginViewModel, authViewModel = authViewModel, navController = navController)}}
         composable("registro") {val registroViewModel: RegistroViewModel = viewModel()

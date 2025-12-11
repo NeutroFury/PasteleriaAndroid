@@ -37,6 +37,7 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoLight = FontFamily(Font(R.font.lato_light))
 
+
     LaunchedEffect(uiState.isLogin) {
         if (uiState.isLogin) {
             authViewModel.login(

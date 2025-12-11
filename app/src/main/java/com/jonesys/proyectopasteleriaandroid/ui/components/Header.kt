@@ -22,12 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -64,28 +61,7 @@ fun Header(
             )
         }
 
-        Spacer(Modifier.width(8.dp))
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(1f)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier.size(44.dp),
-                contentScale = ContentScale.Fit
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = "Pastelería mil sabores",
-                fontSize = 18.sp,
-                fontFamily = Pacifico,
-                color = ColorTexto,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+        Spacer(Modifier.width(180.dp))
 
         if (isLogged) {
             Text(
@@ -102,7 +78,7 @@ fun Header(
             ) {
                 Button(
                     onClick = { navController.navigate("login") },
-                    modifier = Modifier.height(36.dp),
+                    modifier = Modifier.height(40.dp),
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = ColorTexto,
@@ -110,11 +86,11 @@ fun Header(
                     ),
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("Iniciar", fontSize = 13.sp, fontFamily = LatoRegular)
+                    Text("Iniciar", fontSize = 14.sp, fontFamily = LatoRegular)
                 }
                 Button(
                     onClick = { navController.navigate("registro") },
-                    modifier = Modifier.height(36.dp),
+                    modifier = Modifier.height(40.dp),
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = ColorTexto,
@@ -122,7 +98,7 @@ fun Header(
                     ),
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("Registrarse", fontSize = 13.sp, fontFamily = LatoRegular)
+                    Text("Registrarse", fontSize = 14.sp, fontFamily = LatoRegular)
                 }
             }
         }

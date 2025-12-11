@@ -40,6 +40,7 @@ fun HomeScreen(
 ) {
     val Pacifico = FontFamily(Font(R.font.pacifico_regular))
     val LatoRegular = FontFamily(Font(R.font.lato_regular))
+    val LatoBlack = FontFamily(Font(R.font.lato_black_italic))
     val productos by productosViewModel.productos.collectAsState(initial = emptyList())
 
     LaunchedEffect(Unit) {
@@ -62,7 +63,8 @@ fun HomeScreen(
             BannerPrincipal(
                 navController = navController,
                 Pacifico = Pacifico,
-                Lato = LatoRegular
+                Lato = LatoRegular,
+                LatoBlack = LatoBlack
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -88,7 +90,8 @@ fun HomeScreen(
 private fun BannerPrincipal(
     navController: NavHostController,
     Pacifico: FontFamily,
-    Lato: FontFamily
+    Lato: FontFamily,
+    LatoBlack: FontFamily
 ) {
     Card(
         modifier = Modifier
@@ -102,23 +105,23 @@ private fun BannerPrincipal(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Bienvenido a nuestra Pastelería",
-                fontFamily = Pacifico,
-                color = Pink40,
-                fontSize = 28.sp,
-                textAlign = TextAlign.Center
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "logo",
+                modifier = Modifier
+                    .size(220.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+                contentScale = ContentScale.Fit
             )
-
             Spacer(modifier = Modifier.height(12.dp))
-
             Text(
                 text = "Las mejores recetas de pastelería chilena hechas con amor",
-                fontFamily = Lato,
+                fontFamily = LatoBlack,
                 color = ColorMainBlanco,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 textAlign = TextAlign.Center
             )
+
 
             Spacer(modifier = Modifier.height(20.dp))
 

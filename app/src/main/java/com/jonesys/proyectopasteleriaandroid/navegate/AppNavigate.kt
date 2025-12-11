@@ -16,6 +16,7 @@ import com.jonesys.proyectopasteleriaandroid.ui.screen.HomeScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.LoginScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.OfertasScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.PerfilScreen
+import com.jonesys.proyectopasteleriaandroid.ui.screen.PostresExternosScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.ProductosScreen
 import com.jonesys.proyectopasteleriaandroid.ui.screen.RegistroScreen
 import com.jonesys.proyectopasteleriaandroid.viewmodel.AuthViewModel
@@ -42,5 +43,11 @@ fun AppNavigate() {
         composable("blogUno") { Box(Modifier.fillMaxSize()) { BlogUnoScreen(navController, authViewModel) } }
         composable("blogDos") { Box(Modifier.fillMaxSize()) { BlogDosScreen(navController, authViewModel) } }
         composable("geo") { Box(Modifier.fillMaxSize()) { GeolocalizacionScreen(navController) } }
+        composable("postres_externos") {
+            PostresExternosScreen(
+                navController = navController,
+                authViewModel = authViewModel
+            )
+        }
     }
 }

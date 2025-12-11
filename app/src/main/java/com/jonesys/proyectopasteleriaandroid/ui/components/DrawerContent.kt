@@ -90,6 +90,21 @@ fun DrawerContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+
+            DrawerMenuItem(
+                text = "Postres Internacionales",
+                icon = Icons.Default.Cake,
+                onClick = {
+                    scope.launch {
+                        drawerState.close()
+                        navController.navigate("postres_externos")
+                    }
+                },
+                Lato = Lato
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             DrawerMenuItem(
                 text = "Ofertas Especiales",
                 icon = Icons.Default.Sell,

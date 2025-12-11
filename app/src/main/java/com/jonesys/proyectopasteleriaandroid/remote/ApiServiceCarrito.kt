@@ -7,44 +7,42 @@ import retrofit2.http.*
 
 interface ApiServiceCarrito {
 
-    // Endpoints de Carrito
-    @POST("api/carritos/save")  // ← Cambiar carrito a carritos
+    @POST("api/carritos/save")
     suspend fun saveCarrito(@Body carrito: Carrito): Response<Carrito>
 
-    @GET("api/carritos/all")  // ← Cambiar carrito a carritos
+    @GET("api/carritos/all")
     suspend fun getAllCarritos(): Response<List<Carrito>>
 
-    @DELETE("api/carritos/delete/{id}")  // ← Cambiar carrito a carritos
+    @DELETE("api/carritos/delete/{id}")
     suspend fun deleteCarrito(@Path("id") id: Long): Response<Unit>
 
-    @GET("api/carritos/find/{id}")  // ← Cambiar carrito a carritos
+    @GET("api/carritos/find/{id}")
     suspend fun findCarrito(@Path("id") id: Long): Response<Carrito>
 
-    @GET("api/carritos/usuario/{usuarioId}")  // ← Cambiar carrito a carritos
+    @GET("api/carritos/usuario/{usuarioId}")
     suspend fun getCarritoByUsuarioId(@Path("usuarioId") usuarioId: Long): Response<Carrito>
 
-    @PUT("api/carritos/update/{id}")  // ← Cambiar carrito a carritos
+    @PUT("api/carritos/update/{id}")
     suspend fun updateCarrito(@Path("id") id: Long, @Body carrito: Carrito): Response<Carrito>
 
-    // Endpoints de CarritoItem
-    @POST("api/carrito-items/save")  // ← Cambiar carrito-item a carrito-items
+    @POST("api/carrito-items/save")
     suspend fun saveCarritoItem(@Body item: CarritoItem): Response<CarritoItem>
 
-    @GET("api/carrito-items/all")  // ← Cambiar carrito-item a carrito-items
+    @GET("api/carrito-items/all")
     suspend fun getAllCarritoItems(): Response<List<CarritoItem>>
 
-    @GET("api/carrito-items/carrito/{carritoId}")  // ← Cambiar carrito-item a carrito-items
+    @GET("api/carrito-items/carrito/{carritoId}")
     suspend fun getItemsByCarritoId(@Path("carritoId") carritoId: Long): Response<List<CarritoItem>>
 
-    @DELETE("api/carrito-items/delete/{id}")  // ← Cambiar carrito-item a carrito-items
+    @DELETE("api/carrito-items/delete/{id}")
     suspend fun deleteCarritoItem(@Path("id") id: Long): Response<Unit>
 
-    @DELETE("api/carrito-items/carrito/{carritoId}/clear")  // ← Cambiar carrito-item a carrito-items
+    @DELETE("api/carrito-items/carrito/{carritoId}/clear")
     suspend fun clearCarrito(@Path("carritoId") carritoId: Long): Response<Unit>
 
-    @GET("api/carrito-items/find/{id}")  // ← Cambiar carrito-item a carrito-items
+    @GET("api/carrito-items/find/{id}")
     suspend fun findCarritoItem(@Path("id") id: Long): Response<CarritoItem>
 
-    @PUT("api/carrito-items/update/{id}")  // ← Cambiar carrito-item a carrito-items
+    @PUT("api/carrito-items/update/{id}")
     suspend fun updateCarritoItem(@Path("id") id: Long, @Body item: CarritoItem): Response<CarritoItem>
 }

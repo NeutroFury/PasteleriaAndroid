@@ -28,7 +28,7 @@ class CarritoViewModel : ViewModel() {
                     val carrito: Carrito? = carritoResponse.body()
                     if (carrito != null && carrito.id != null) {
                         carritoId = carrito.id
-                        cargarItems(carrito.id)  // ← Llama a la función privada
+                        cargarItems(carrito.id)
                     }
                 }
             } catch (e: Exception) {
@@ -81,7 +81,6 @@ class CarritoViewModel : ViewModel() {
             try {
                 android.util.Log.d("CarritoViewModel", "Iniciando agregar producto al carrito. UserId: $usuarioId, Producto: ${producto.nombre}")
 
-                // 1. Obtener o crear carrito del usuario
                 var carrito: Carrito? = null
                 val carritoResponse = repository.getCarritoByUsuario(usuarioId)
 
@@ -112,29 +111,25 @@ class CarritoViewModel : ViewModel() {
                     }
                 }
 
-                // 2. Verificar si el producto ya existe en el carrito
                 carrito?.let { carritoActual ->
                     carritoId = carritoActual.id
 
-                    // Cargar items actuales si no están cargados
                     if (_carritoItems.value.isEmpty()) {
                         carritoActual.id?.let { id -> cargarItems(id) }
                     }
 
-                    // Buscar si el producto ya existe en el carrito
                     val itemExistente = _carritoItems.value.find {
                         it.producto?.id == producto.id
                     }
 
                     if (itemExistente != null) {
-                        // Si existe, actualizar la cantidad
+
                         android.util.Log.d("CarritoViewModel", "Producto ya existe, actualizando cantidad")
                         val nuevaCantidad = (itemExistente.cantidad ?: 0) + cantidad
                         itemExistente.id?.let { itemId ->
                             actualizarCantidad(itemId, nuevaCantidad)
                         }
                     } else {
-                        // Si no existe, agregar nuevo item
                         android.util.Log.d("CarritoViewModel", "Agregando nuevo item al carrito ${carritoActual.id}")
                         val nuevoItem = CarritoItem(
                             carrito = carritoActual,

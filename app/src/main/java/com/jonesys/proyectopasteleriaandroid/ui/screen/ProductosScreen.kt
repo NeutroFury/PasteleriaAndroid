@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -200,7 +201,8 @@ fun ProductoCard(producto: Producto, onAddToCart: () -> Unit) {
                 onClick = onAddToCart,
                 colors = ButtonDefaults.buttonColors(containerColor = ColorBotonRosa),
                 shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth().height(48.dp)
+                modifier = Modifier.fillMaxWidth().height(48.dp).testTag("BTN_AñadirCarrito"),
+
             ) {
                 Text(
                     text = "Añadir al carrito",

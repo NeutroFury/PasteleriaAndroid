@@ -5,7 +5,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstanceMeal {
 
-    // La URL base de la API externa
     private const val BASE_URL = "https://www.themealdb.com/"
 
     val api: ApiServiceMeal by lazy {

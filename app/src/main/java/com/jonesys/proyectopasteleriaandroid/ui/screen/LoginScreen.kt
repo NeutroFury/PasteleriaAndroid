@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontFamily
 import com.jonesys.proyectopasteleriaandroid.R
 import com.jonesys.proyectopasteleriaandroid.ui.theme.ColorTitulos
 import androidx.compose.material3.Text
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -117,7 +118,7 @@ fun LoginScreen(viewModel: LoginViewModel, authViewModel: AuthViewModel, navCont
                     onClick = { viewModel.Login() },
                     modifier = Modifier
                         .fillMaxWidth(0.6f)
-                        .height(45.dp),
+                        .height(45.dp).testTag("BTN_LOGIN"),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = ColorBotonRosa,
